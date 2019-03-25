@@ -1,0 +1,11 @@
+$(document).ready(function(){
+console.log("1111");
+  $("#overall").click(function(){
+    $('.admin-content').load('index.html');
+    console.log("222");
+  })
+  $("#1overall").click(function(){
+      $('.admin-content').load('index.html');
+      console.log("333");
+    })
+});
