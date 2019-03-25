@@ -6,6 +6,6 @@ console.log("1111");
   })
   $("#1overall").click(function(){
       $('.admin-content').load('index.html');
-      console.log("333");
+      console.log("5555");
     })
 });
