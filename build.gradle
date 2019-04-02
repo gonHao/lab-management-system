@@ -27,7 +27,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.0.0'
-	implementation 'org.springframework.session:spring-session-jdbc'
+//	implementation 'org.springframework.session:spring-session-jdbc'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'mysql:mysql-connector-java'
