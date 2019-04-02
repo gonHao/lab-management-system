@@ -1,4 +1,4 @@
-package com.kmust.labmanagementsystem;
+package com.kmust.labManagementSystem;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

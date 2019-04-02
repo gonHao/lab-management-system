@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url:  jdbc:mysql://localhost:3306/test?serverTimezone=UTC&noDatetimeStringSync=true&characterEncoding=utf8
+    url:  jdbc:mysql://localhost:3306/admin?serverTimezone=UTC&noDatetimeStringSync=true&characterEncoding=utf8
     username: root
     password: root
     driver-class-name:  com.mysql.jdbc.Driver
@@ -14,6 +14,6 @@ spring:
     content-type: text/html
     cache:  false
 
-#mybatis:
-#  mapper-locations: classpath:mapper/*.xml
-#  type-aliases-package:  com.gh.Demo.module
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package:  com.gh.Demo.module
