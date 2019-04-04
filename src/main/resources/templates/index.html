@@ -33,7 +33,7 @@
             <div class="sidebar-sticky">
                 <ul class="nav flex-column">
                     <li class="nav-item" id="qwe">
-                        <a class="nav-link active" href="#">
+                        <a class="nav-link active" href="#" onclick="loadHtml('userTest')">
                             <span data-feather="home"></span>
                             Dashboard <span class="sr-only">(current)</span>
                         </a>
@@ -127,11 +127,10 @@
 
 </script>
 <script>
-$(function(){
-    $("#qwe").click(function(){
-        $("#testDiv").load("userTest");
-     });
- });
+
+   function loadHtml(href){
+        $("#testDiv").load(href);
+   }
 
 
 
