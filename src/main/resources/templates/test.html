@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<div xmlns:th="http://www.w3.org/1999/xhtml">
+    <<table class="table table-condensed table-hover" >
+    <tr>
+        <td>ID</td>
+        <td>用户名</td>
+        <td>密码</td>
+    </tr>
+    <tr th:each="user:${users}">
+        <td th:text="${user.userId}"></td>
+        <td th:text="${user.userNm}"></td>
+        <td th:text="${user.userPwd}"></td>
+    </tr>
+
+</table>
+</div>
