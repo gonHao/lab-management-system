@@ -7,22 +7,23 @@
     <meta name="author" content="">
     <link rel="icon" href="../../../../favicon.ico">
 
-    <title>Dashboard Template for Bootstrap</title>
+    <title>昆明理工大学实验室管理系统</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../../../../dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="dashboard.css" rel="stylesheet">
+    <link href="menu.css" rel="stylesheet">
 </head>
 
 <body>
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Company 123123name</a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">昆明理工大学实验室管理系统</a>
     <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
     <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-            <a class="nav-link" href="#">Sign out</a>
+            <a class="nav-link" href="#">退出登录</a>
         </li>
     </ul>
 </nav>
@@ -30,78 +31,50 @@
 <div class="container-fluid">
     <div class="row">
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-            <div class="sidebar-sticky">
-                <ul class="nav flex-column">
-                    <li class="nav-item" id="qwe">
-                        <a class="nav-link active" href="#" onclick="loadHtml('userTest')">
-                            <span data-feather="home"></span>
-                            Dashboard <span class="sr-only">(current)</span>
-                        </a>
+            <div class="sidebar-sticky" style="top: 20px;background-color: #494e53">
+                <ul class="menu">
+                    <li class="list"><a href="#">首页</a>
+
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="file"></span>
-                            Orders
-                        </a>
+                    <li class="list"><a href="#">耗材的管理</a>
+                        <ul class="items">
+                            <li> <a href="#" class="a">每期耗材的申报 </a></li>
+                            <li> <a href="#" class="a">每期耗材的领用 </a></li>
+                            <li> <a href="#" class="a">每期耗材的建账登记表</a></li>
+                            <li> <a href="#" class="a">所有耗材的库存清单</a></li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="shopping-cart"></span>
-                            Products
-                        </a>
+                    <li class="list"><a href="#">实验室资产</a>
+                        <ul class="items">
+                            <li> <a href="#"  class="a"> 新建资产 </a></li>
+                            <li> <a href="#"  class="a"> 维护资产 </a></li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="users"></span>
-                            Customers
-                        </a>
+                    <li class="list"><a href="#">实验室基础信息</a>
+                        <ul class="items">
+                            <li> <a href="#"  class="a"> 添加实验室信息 </a></li>
+                            <li> <a href="#"  class="a"> 维护实验室信息 </a></li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="bar-chart-2"></span>
-                            Reports
-                        </a>
+                    <li class="list"><a href="#">实验室钥匙管理</a>
+                        <ul class="items">
+                            <li> <a href="#"  class="a"> 借用钥匙的登记 </a></li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="layers"></span>
-                            Integrations
-                        </a>
+                    <li class="list"><a href="#">实验室检查记录</a>
+                    </li>
+                    <li class="list"><a href="#">实验室教学管理</a>
+                        <ul class="items">
+                            <li> <a href="#" class="a" > 实验室安排的实验实训 </a></li>
+                            <li> <a href="#"  class="a"> 实验室开设的项目 </a></li>
+                        </ul>
+                    </li>
+                    <li class="list"><a href="#">实验室模拟</a>
+                    </li>
+                    <li class="list"><a href="#">个人中心</a>
                     </li>
                 </ul>
 
-                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                    <span>Saved reports</span>
-                    <a class="d-flex align-items-center text-muted" href="#">
-                        <span data-feather="plus-circle"></span>
-                    </a>
-                </h6>
-                <ul class="nav flex-column mb-2">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="file-text"></span>
-                            Current month
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="file-text"></span>
-                            Last quarter
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="file-text"></span>
-                            Social engagement
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="file-text"></span>
-                            Year-end sale
-                        </a>
-                    </li>
-                </ul>
             </div>
         </nav>
 
@@ -127,13 +100,41 @@
 
 </script>
 <script>
-
    function loadHtml(href){
         $("#testDiv").load(href);
    }
+   var list = document.querySelectorAll('.list');
+   var list1 = document.querySelectorAll('.a');
+   function accordion(e) {
+       e.stopPropagation();
+       if (this.classList.contains('active')) {
+           if(this.parentElement.classList.contains('active')){
 
+           }else{
+               this.classList.remove('active');
+           }
+       } else
+       if (this.parentElement.parentElement.classList.contains('active')) {
+           this.classList.add('active');
+       } else
+       {
+           for (i = 0; i < list.length; i++) {
+               list[i].classList.remove('active');
 
-
+           }
+           this.classList.add('active');
+       }
+   }
+   for (i = 0; i < list.length; i++) {
+       list[i].addEventListener('click', accordion);
+   }
+   for (i = 0; i < list.length; i++) {
+       list1[i].addEventListener('click', accordion1);
+   }
+   function accordion1(e) {
+       e.stopPropagation();
+       this.parentElement.parentElement.classList.add('active');
+   }
 </script>
 
 <!-- Graphs -->
