@@ -1,6 +1,6 @@
 package com.kmust.labManagementSystem.controller;
 
-import com.kmust.labManagementSystem.dao.User;
+import com.kmust.labManagementSystem.dao.UserInfo;
 import com.kmust.labManagementSystem.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +15,7 @@ public class UserController {
     private UserServiceImpl userService;
     @RequestMapping("/userTest")
     public String userTest(ModelMap model){
-        List<User> users = userService.findAllUserInfo();
+        List<UserInfo> users = userService.findAllUserInfo();
         System.out.println("userInfo:\n"+users);
         model.addAttribute("users",users);
         return "/test";

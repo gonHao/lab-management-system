@@ -1,10 +1,11 @@
 package com.kmust.labManagementSystem.mapper;
 
-import com.kmust.labManagementSystem.dao.User;
+import com.kmust.labManagementSystem.dao.UserInfo;
 
 import java.util.List;
 
 public interface UserMapper {
-     User selectByUserId(String userId);
-     List<User> findAllUserInfo();
+     UserInfo selectByUserId(String userId);
+     UserInfo selectByUserNm(String username);
+     List<UserInfo> findAllUserInfo();
 }

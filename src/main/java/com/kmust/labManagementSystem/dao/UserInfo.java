@@ -1,11 +1,11 @@
 package com.kmust.labManagementSystem.dao;
 
-public class User {
+public class UserInfo {
     private String userId;
     private String userNm;
     private String userPwd;
 
-    public User(String userName, String password) {
+    public UserInfo(String userName, String password) {
         this.userNm = userName;
         this.userPwd = password;
     }
@@ -36,7 +36,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "UserInfo{" +
                 "userId='" + userId + '\'' +
                 ", userNm='" + userNm + '\'' +
                 ", userPwd='" + userPwd + '\'' +
