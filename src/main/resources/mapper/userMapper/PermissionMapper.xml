@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kmust.labManagementSystem.mapper.userMapper.UserPerissionMapper">
+    <select id="selectByUserNm" resultType="java.lang.String">
+        select module_nm
+        from user_module_map a inner join module_info b on a.module_Id = b.module_Id
+        where a.user_nm = #{username}
+    </select>
+</mapper>

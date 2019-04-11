@@ -16,7 +16,7 @@ public class UserController {
     @RequestMapping("/userTest")
     public String userTest(ModelMap model){
         List<UserInfo> users = userService.findAllUserInfo();
-        System.out.println("userInfo:\n"+users);
+        System.out.println("userDao:\n"+users);
         model.addAttribute("users",users);
         return "/test";
     }

@@ -14,11 +14,6 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public UserInfo selectByUserId(String userId) {
-        return userMapper.selectByUserId(userId);
-    }
-
-    @Override
     public UserInfo selectByUserNm(String username) {
         return userMapper.selectByUserNm(username);
     }

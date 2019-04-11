@@ -44,9 +44,12 @@ public class UserAdminController {
             String target =savedRequest.getRedirectUrl();
             if(StringUtils.endsWithIgnoreCase(target,".html")){
                 redirectStrategy.sendRedirect(request,response,"/login");
-
             }
         }
-        return null;
+        return "需要身份认证";
     }
+
+
+
 }
+
