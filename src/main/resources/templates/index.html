@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
+    <!--<meta name="_csrf" th:content="${_csrf.token}"/>-->
+    <!--<meta name="_csrf_header" th:content="${_csrf.headerName}"/>-->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -99,6 +101,15 @@
       feather.replace()
 
 </script>
+<!--<script>-->
+    <!--$(function () {-->
+    <!--var token = $("meta[name='_csrf']").attr("content");-->
+    <!--var header = $("meta[name='_csrf_header']").attr("content");-->
+    <!--$(document).ajaxSend(function (e, xhr, options) {-->
+        <!--xhr.setRequestHeader(header, token);-->
+    <!--});-->
+<!--});-->
+<!--</script>-->
 <script>
    function loadHtml(href){
         $("#testDiv").load(href);
