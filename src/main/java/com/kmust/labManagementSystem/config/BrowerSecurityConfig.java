@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,7 +22,16 @@ public class BrowerSecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
+//
+//    /**
+//     * 防止静态资源被拦截器拦截
+//     * @param web
+//     * @throws Exception
+//     */
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//        web.ignoring().antMatchers();
+//    }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin()
@@ -29,14 +39,14 @@ public class BrowerSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/index")
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login").permitAll()
-                .anyRequest()
-                .authenticated()
+                .antMatchers("/userTest").hasRole("ABC")
+                .antMatchers("/login","/assets/**","/dist/**","/docs/**",
+                        "/dashboard.css","/jquery-3.3.1.js","/menu.css").permitAll()
                 .and().csrf().disable();
+//                .and()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+
     }
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/assets/**","/dist/**","/docs/**","/dashboard.css","/jquery-3.3.1.js","/menu.css");
-    }
+
 }
