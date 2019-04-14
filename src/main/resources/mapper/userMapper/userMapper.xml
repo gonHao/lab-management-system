@@ -5,6 +5,9 @@
     <resultMap id="BaseResultMap" type="com.kmust.labManagementSystem.dao.UserInfo">
         <result column="user_nm" jdbcType="VARCHAR" property="userNm" />
         <result column="user_pwd" jdbcType="VARCHAR" property="userPwd" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="createDate" jdbcType="VARCHAR" property="createDate" />
+        <result column="note" jdbcType="VARCHAR" property="note" />
     </resultMap>
     <select id="selectByUserNm" resultMap="BaseResultMap">
         select *
@@ -15,5 +18,23 @@
     <select id="findAllUserInfo" resultMap="BaseResultMap">
         select *
         from user_info
+    </select>
+
+    <select id="findUserInfo" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select *
+        from user_info
+        where 1=1
+        <if test="userNm != null and userNm != ''">
+            and user_nm like "%"#{userNm}"%"
+        </if>
+        <if test="name != null and name != ''">
+            and name like "%"#{name}"%"
+        </if>
+        <if test="createDate != null and createDate != ''">
+            and createDate like "%"#{createDate}"%"
+        </if>
+        <if test="note != null and note != ''">
+            and note like "%"#{note}"%"
+        </if>
     </select>
 </mapper>

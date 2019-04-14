@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<div xmlns:th="http://www.thymeleaf.org">
+    <div class="row" style="float: right">
+        <form id="findForm" class="form-inline" action="#" method="post" style="margin-bottom: 30px;">
+            <div class="form-group">
+                <label class="cls-label">用户名：</label>
+                <input type="text" class="form-control input-sm" id="userNm" name="userNm" placeholder="Search">
+                <label>姓名：</label>
+                <input type="text" class="form-control input-sm" id="name" name="name" placeholder="Search">
+                <label>账号创建日期：</label>
+                <input type="text" class="form-control input-sm" id="createDate" name="createDate" placeholder="Search">
+                <label>角色描述：</label>
+                <input type="text" class="form-control input-sm" id="note" name="note" placeholder="Search">
+            </div>
+            <input type="button" class="btn btn-default btn-sm" style="margin-left: 20px;" onclick="findInfo()" value="查 询"/>
+            <input type="button" class="btn btn-success btn-sm" style="margin-left: 20px;" data-toggle="modal"
+                   data-target=".bs-example-modal-lg" value="新 增"/>
+        </form>
+    </div>
+    <div id="table_refresh" th:fragment="table_refresh">
+        <table class="table table-condensed table-hover">
+            <tr>
+                <td>用户名</td>
+                <td>姓名</td>
+                <td>账号创建日期</td>
+                <td>角色描述</td>
+            </tr>
+            <tr th:each="user:${users}">
+                <td th:text="${user.userNm}"></td>
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.createDate}"></td>
+                <td th:text="${user.note}"></td>
+
+                <td>
+                    <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                        <button type="button" class="btn btn-primary">修 改</button>
+                        <button type="button" class="btn btn-danger">删 除</button>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+</div>
+<!--modal-->
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">新增角色信息</h4>
+            </div>
+            <form>
+                <div class="form-group" style="padding-left: 30px;padding-right: 30px;">
+                    <div class="row" style="margin-left: 0px;margin-right: 0px;">
+                        <div class="col-xs-4">
+                            <label>用户名：</label>
+                            <input type="text" class="form-control" id="addUserNm" name="userNm"
+                                   placeholder="Search">
+                        </div>
+                        <div class="col-xs-4" style="margin-left: 10px;">
+                            <label>姓名：</label>
+                            <input type="text" class="form-control" id="addName" name="name" placeholder="Search">
+                        </div>
+                    </div>
+
+                    <div class="col-xs-4">
+                        <label>账号创建日期：</label>
+                        <input type="text" class="form-control" id="addCreateDate" name="createDate"
+                               placeholder="Search">
+                    </div>
+                    <div class="col-xs-4">
+                        <label>角色描述：</label>
+                        <input type="text" class="form-control" id="addNote" name="note" placeholder="Search">
+                    </div>
+                    <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading">角色权限</div>
+                        <!-- List group -->
+                        <div class="col-xs-4" style="padding-left: 20px;">
+                            <ul class="list-unstyled">
+                                <li><input type="checkbox">用户管理</li>
+                                <li><input type="checkbox">耗材的管理</li>
+                                <li><input type="checkbox">实验室资产</li>
+                                <li><input type="checkbox">实验室基础信息</li>
+                                <li><input type="checkbox">实验室钥匙管理</li>
+                                <li><input type="checkbox">实验室检查记录</li>
+                                <li><input type="checkbox">实验室教学管理</li>
+                                <li><input type="checkbox">实验室模拟</li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">提交</button>
+            </div>
+        </div>
+    </div>
+</div>

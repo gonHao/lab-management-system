@@ -1,8 +1,16 @@
 package com.kmust.labManagementSystem.dao.userDao;
 
+import java.util.List;
+
+/**
+ * 管理员可查看的用户信息
+ */
 public class UserPerission {
-    private String userNm;
-    private String userModule;
+    private String userNm;//用户名
+    private String name;//真实姓名
+    private String createDate;//账号创建日期
+    private String note;//角色描述
+    private List<String> userModule;//拥有权限
 
     public String getUserNm() {
         return userNm;
@@ -12,11 +20,35 @@ public class UserPerission {
         this.userNm = userNm;
     }
 
-    public String getUserModule() {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public List<String> getUserModule() {
         return userModule;
     }
 
-    public void setUserModule(String userModule) {
+    public void setUserModule(List<String> userModule) {
         this.userModule = userModule;
     }
 
@@ -24,7 +56,10 @@ public class UserPerission {
     public String toString() {
         return "UserPerission{" +
                 "userNm='" + userNm + '\'' +
-                ", userModule='" + userModule + '\'' +
+                ", name='" + name + '\'' +
+                ", createDate='" + createDate + '\'' +
+                ", note='" + note + '\'' +
+                ", userModule=" + userModule +
                 '}';
     }
 }

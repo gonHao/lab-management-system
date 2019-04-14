@@ -34,15 +34,21 @@ public class BrowerSecurityConfig extends WebSecurityConfigurerAdapter {
 //    }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin()
+        http .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/index")
                 .and()
                 .authorizeRequests()
-                .antMatchers("/userTest").hasRole("ABC")
                 .antMatchers("/login","/assets/**","/dist/**","/docs/**",
                         "/dashboard.css","/jquery-3.3.1.js","/menu.css").permitAll()
+                .antMatchers("/index").hasRole("admin")
+                .antMatchers("/userTest").hasRole("students")
+//                .and()
+//                .authorizeRequests()
+//                .antMatchers("/userTest").hasRole("students")
+                .anyRequest().authenticated()
                 .and().csrf().disable();
+
 //                .and()
 //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
 

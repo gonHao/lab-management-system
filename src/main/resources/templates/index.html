@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <!--<meta name="_csrf" th:content="${_csrf.token}"/>-->
     <!--<meta name="_csrf_header" th:content="${_csrf.headerName}"/>-->
@@ -13,6 +14,7 @@
 
     <!-- Bootstrap core CSS -->
     <link href="../../../../dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../../../dist/css/*.css">
 
     <!-- Custom styles for this template -->
     <link href="dashboard.css" rel="stylesheet">
@@ -37,6 +39,11 @@
                 <ul class="menu">
                     <li class="list"><a href="#" onclick="loadHtml('userTest')">首页</a>
 
+                    </li>
+                    <li class="list"><a href="#">用户管理</a>
+                        <ul class="items">
+                            <li> <a href="#" class="a" onclick="loadHtml('userPermAdmin')">用户权限管理 </a></li>
+                        </ul>
                     </li>
                     <li class="list"><a href="#">耗材的管理</a>
                         <ul class="items">
@@ -94,6 +101,8 @@
 </script>
 <script src="../../../../assets/js/vendor/popper.min.js"></script>
 <script src="../../../../dist/js/bootstrap.min.js"></script>
+<script src="../../../../dist/js/bootstrap.min.js"></script>
+<script src="../../../../assets/js/load.js"></script>
 
 <!-- Icons -->
 <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
