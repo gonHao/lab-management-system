@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kmust.labManagementSystem.mapper.teachingManagementMapper.TimeTablesMapper">
+    <resultMap id="BaseResultMap" type="com.kmust.labManagementSystem.dao.teachingManagementDao.TimeTablesInfo">
+        <result column="id" jdbcType="INTEGER" property="id" />
+        <result column="week" jdbcType="VARCHAR" property="week" />
+        <result column="day" jdbcType="VARCHAR" property="day" />
+        <result column="begintime" jdbcType="VARCHAR" property="beginTime" />
+        <result column="endtime" jdbcType="VARCHAR" property="endTime" />
+        <result column="profclassno" jdbcType="VARCHAR" property="profClassNo" />
+        <result column="classroom_no" jdbcType="VARCHAR" property="classroomNo" />
+        <result column="teacher_no" jdbcType="VARCHAR" property="teacherNo" />
+        <result column="class_name" jdbcType="VARCHAR" property="className" />
+    </resultMap>
+
+    <select id="selectByWeek" resultMap="BaseResultMap">
+        select *
+        from time_table
+        where
+        week=#{week}
+        and classroom_no = #{classroom_no}
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        select *
+        from time_table
+        where
+        id=#{id}
+    </select>
+
+    <delete id="deleteClass">
+        delete from time_table
+        where id=#{id}
+    </delete>
+
+    <insert id="addClass" parameterType="com.kmust.labManagementSystem.dao.teachingManagementDao.TimeTablesInfo">
+        insert into time_table
+        values(null,#{week},#{day},#{beginTime},#{endTime},#{profClassNo},#{classroomNo},#{teacherNo},#{className})
+    </insert>
+
+    <select id="findClassInfoList" parameterType="com.kmust.labManagementSystem.dao.teachingManagementDao.TimeTablesInfo" resultMap="BaseResultMap">
+        select *
+        from time_table
+        where
+        week=#{week}
+        and day=#{day}
+        and classroom_no = #{classroomNo}
+    </select>
+</mapper>

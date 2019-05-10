@@ -37,4 +37,8 @@
             and note like "%"#{note}"%"
         </if>
     </select>
+    <insert id="addUser" parameterType="com.kmust.labManagementSystem.dao.UserInfo">
+        insert into user_info
+        values(#{userNm},#{userPwd},#{name},#{createDate},#{note})
+    </insert>
 </mapper>

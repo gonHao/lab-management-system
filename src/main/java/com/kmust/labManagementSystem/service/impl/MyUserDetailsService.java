@@ -38,10 +38,10 @@ public class MyUserDetailsService implements UserDetailsService {
         logger.info("用户名："+username);
         //查询该用户信息
         UserInfo userInfo = userService.selectByUserNm(username);
-        String password  =  passwordEncoder.encode(userInfo.getUserPwd());
+        String password  =  userInfo.getUserPwd();
         logger.info("数据库密码："+password);
         return new User(username,password,
-                true,true,true,true,
+//                true,true,true,true,
                 roleCodes);
 //                AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_admin"));
     }

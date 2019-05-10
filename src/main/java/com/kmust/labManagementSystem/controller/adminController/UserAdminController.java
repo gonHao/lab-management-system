@@ -37,6 +37,8 @@ public class UserAdminController {
     private RedirectStrategy redirectStrategy =  new DefaultRedirectStrategy();
     @Autowired
     UserPermService userPermService;
+    @Autowired
+    UserService userService;
 
     /**
      * 登录跳转页面
@@ -73,6 +75,24 @@ public class UserAdminController {
         }
         return "/userPermAdmin/userPermAdmin::table_refresh";
     }
+
+    @RequestMapping("/addUser")
+    @ResponseBody
+    public String addUser(@RequestBody UserPerission formDate){
+        try {
+            if(userService.addUser(formDate)&&userPermService.addUserPermission(formDate)){
+                logger.info("新增用户成功");
+                return "新增用户信息成功";
+            }else {
+                return "新增失败";
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return "服务器异常 ";
+        }
+    }
+
 
     /**
      * 当需要身份认证时，跳转到这里

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<div class="row">
+    <form class="form-inline" action="#" method="post">
+        <label class="cls-label">教室：</label>
+        <input type="text" class="form-control input-sm" id="className" list="itemlist" name="">
+        <datalist id="itemlist">
+            <option>明轩楼405</option>
+            <option>明轩楼605</option>
+        </datalist>
+        <span style="padding-left: 50px;"></span>
+        <button type="button" class="btn btn-default btn-sm" onclick="subtract1()">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"><</span>
+        </button>
+        <h5>第</h5>
+        <input type="text" class="form-control input-sm" style="width: 35px;" id="weekNo" value="1">
+        <h5>周</h5>
+        <button type="button" class="btn btn-default btn-sm" onclick="add1()">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true">></span>
+        </button>
+
+    </form>
+    <button onclick="onChange()"
+            style="background-color: #00a2ae; color: #fff; padding: 5px 10px; border-radius: 4px;border: none">
+        查 询
+    </button>
+    <input type="button" class="btn btn-success btn-sm" style="margin-left: 20px;" data-toggle="modal"
+           data-target=".bs-example-modal-lg" id="addClassB"  value="新 增"/>
+
+</div>
+<div id="coursesTable"></div>
+<input type="button" id="check" class="btn btn-success btn-sm" style="display: none;" data-toggle="modal"
+       data-target=".bs-example-modal-lg" value="查看课程信息"/>
+<div class="modal fade bs-example-modal-lg" id="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <form>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">课程信息</h4>
+                </div>
+                <div class="form-group" style="padding-left: 30px;padding-right: 30px;">
+                    <div class="row" style="margin-left: 0px;margin-right: 0px;">
+                        <div class="col-xs-4">
+                            <label>教室选择：</label>
+                            <input type="text" class="form-control" id="classroom" list="itemlist">
+                        </div>
+                        <div class="col-xs-4">
+                            <label>课程名称：</label>
+                            <input type="text" class="form-control" id="classNm">
+                        </div>
+                    </div>
+                    <div class="row" id="weekDiv" style="margin-left: 0px;margin-right: 0px;">
+                        <div class="col-xs-4">
+                            <label>开始周：</label>
+                            <input type="text" class="form-control" id="beginWeek">
+                        </div>
+                        <div class="col-xs-4" style="margin-left: 10px;">
+                            <label>结束周：</label>
+                            <input type="text" class="form-control" id="endWeek">
+                        </div>
+                        <div class="col-xs-4" style="margin-left: 10px;">
+                            <label>星期几：</label>
+                            <input type="text" class="form-control" id="day">
+                        </div>
+                    </div>
+                    <div class="row" style="margin-left: 0px;margin-right: 0px;">
+                        <div class="col-xs-4">
+                            <label>开始时间：</label>
+                            <input type="text" class="form-control" id="beginTime">
+                        </div>
+                        <div class="col-xs-4" style="margin-left: 10px;">
+                            <label>结束时间：</label>
+                            <input type="text" class="form-control" id="endTime">
+                        </div>
+                    </div>
+                    <p class="text-danger">注意：课程时间的基本时间单位是30分钟，课程时间范围是8:00至22:00</p>
+                    <div class="row" style="margin-left: 0px;margin-right: 0px;">
+                        <div class="col-xs-4">
+                            <label>上课班级：</label>
+                            <input type="text" class="form-control" id="profClass">
+                        </div>
+                        <div class="col-xs-4" style="margin-left: 10px;">
+                            <label>上课教师：</label>
+                            <input type="text" class="form-control" id="teacher">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-danger" id="commit">提交</button>
+                    <button type="button" class="btn btn-danger" id="delete">删除</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+$(function(){
+        var link = document.createElement('link');
+        link.type = 'text/css';
+        link.rel = 'stylesheet';
+        link.href = '../../../../../assets/css/timeTable.css';
+        var head = document.getElementsByTagName('head')[0];
+        head.appendChild(link);
+        console.log("111111111111111111111");
+        $.getScript("../../../../../assets/js/timeTable/ClassJs.js");
+});
+
+  var courseList = [
+    ['', '', '', '', '', '', '', '', '', '', '', '','', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', '', '', '', '','', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', '', '', '', '','', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', '', '', '', '','', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', '', '', '', '','', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', '', '', '', '','', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', '', '', '', '','', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+  ];
+  var week = window.innerWidth > 360 ? ['周一', '周二', '周三', '周四', '周五','周六','周日'] :
+    ['一', '二', '三', '四', '五','六','日'];
+  var day = new Date().getDay();
+  var courseType = [
+    [{index: '1', name: '8:30'}, 1],
+    [{index: '2', name: '9:00'}, 1],
+    [{index: '3', name: '9:30'}, 1],
+    [{index: '4', name: '10:00'}, 1],
+    [{index: '5', name: '10:30'}, 1],
+    [{index: '6', name: '11:00'}, 1],
+    [{index: '7', name: '11:30'}, 1],
+    [{index: '8', name: '12:00'}, 1],
+    [{index: '9', name: '12:30'}, 1],
+    [{index: '10', name: '13:00'}, 1],
+    [{index: '11', name: '13:30'}, 1],
+    [{index: '12', name: '14:00'}, 1],
+    [{index: '13', name: '14:30'}, 1],
+    [{index: '14', name: '15:00'}, 1],
+    [{index: '15', name: '15:30'}, 1],
+    [{index: '16', name: '16:00'}, 1],
+    [{index: '17', name: '16:30'}, 1],
+    [{index: '18', name: '17:00'}, 1],
+    [{index: '19', name: '17:30'}, 1],
+    [{index: '20', name: '18:00'}, 1],
+    [{index: '21', name: '18:30'}, 1],
+    [{index: '22', name: '19:00'}, 1],
+    [{index: '23', name: '19:30'}, 1],
+    [{index: '24', name: '20:00'}, 1],
+    [{index: '25', name: '20:30'}, 1],
+    [{index: '26', name: '21:00'}, 1],
+    [{index: '27', name: '21:30'}, 1],
+    [{index: '28', name: '22:00'}, 1],
+  ];
+  // 实例化(初始化课表)
+  var Timetable = new Timetables({
+    el: '#coursesTable',
+    timetables: courseList,
+    week: week,
+    timetableType: courseType,
+    highlightWeek: day,
+    gridOnClick: function (e) {
+      alert(e.name + '  ' + e.week + ', 第' + e.index + '节课, 课长' + e.length + '节');
+      console.log(e);
+    },
+    styles: {
+      Gheight: 50
+    }
+  });
+var classInfo={};
+  //切换课表
+  function onChange(){
+  var courseListOther;
+        classInfo.weekNo=$("#weekNo").val();
+        classInfo.classroom_no=$("#className").val();
+        $.ajax({
+            type:'get',
+            url:'/findTimeTables',
+            data:{week:$("#weekNo").val(),classroom_no:$("#className").val()},
+            contentType: "application/json;charset=UTF-8;",
+            dataType:'json',
+            success:function(data){
+                var  courseListOther = data;
+                Timetable.setOption({
+                      timetables: courseListOther,
+                      week: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+                      styles: {
+                        palette: ['#dedcda', '#ff4081']
+                      },
+                        timetableType: courseType,
+                      gridOnClick: function (e) {
+                      $("#weekDiv").hide();
+                      $("#commit").hide();
+                      $("#delete").show();
+                      classInfo.id = e.name.split("@")[1];
+                          $.ajax({
+                                type:'get',
+                                url:'/findClassInfo',
+                                data:{id:classInfo.id},
+                                contentType: "application/json;charset=UTF-8;",
+                                dataType:'json',
+                                success:function(data){
+                                    $("#classroom").val(data.classroomNo);
+                                    $("#classNm").val(data.className);
+                                    $("#beginWeek").val(data.week);
+                                    $("#beginTime").val(data.beginTime);
+                                    $("#endTime").val(data.endTime);
+                                    $("#profClass").val(data.profClassNo);
+                                    $("#teacher").val(data.teacherNo);
+                                    console.log(data);
+                                },
+                                error:function(){
+                                    alert("查询课程信息失败！");
+                                }
+                           });
+
+                        $("#classroom").val(classInfo.classroom_no);
+                        $("#check").trigger('click');
+                        console.log(e);
+                      }
+                 });
+                 console.log(data);
+            },
+            error:function(){
+                alert("请求失败");
+            }
+        });
+
+
+
+
+
+  }
+
+
+
+function subtract1(){
+    if(parseInt($("#weekNo").val()) > 1){
+        $("#weekNo").val(parseInt($("#weekNo").val())-1);
+    }else{
+        $("#weekNo").val(parseInt($("#weekNo").val()));
+    }
+}
+function add1(){
+    $("#weekNo").val(parseInt($("#weekNo").val())+1);
+}
+
+</script>

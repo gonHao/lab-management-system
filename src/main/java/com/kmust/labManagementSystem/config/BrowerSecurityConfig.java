@@ -34,14 +34,14 @@ public class BrowerSecurityConfig extends WebSecurityConfigurerAdapter {
 //    }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http .formLogin()
+        http.formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/index")
                 .and()
                 .authorizeRequests()
                 .antMatchers("/login","/assets/**","/dist/**","/docs/**",
                         "/dashboard.css","/jquery-3.3.1.js","/menu.css").permitAll()
-                .antMatchers("/index").hasRole("admin")
+                .antMatchers("/index","/findTimeTables").hasRole("admin")
                 .antMatchers("/userTest").hasRole("students")
 //                .and()
 //                .authorizeRequests()
