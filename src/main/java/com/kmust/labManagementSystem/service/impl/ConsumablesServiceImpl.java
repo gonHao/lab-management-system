@@ -4,7 +4,7 @@ import com.kmust.labManagementSystem.dao.BbDao;
 import com.kmust.labManagementSystem.dao.BcDao;
 import com.kmust.labManagementSystem.dao.BdDao;
 import com.kmust.labManagementSystem.dao.BeDao;
-import com.kmust.labManagementSystem.mapper.ConsumablesMapper;
+import com.kmust.labManagementSystem.mapper.labMapper.ConsumablesMapper;
 import com.kmust.labManagementSystem.service.ConsumablesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

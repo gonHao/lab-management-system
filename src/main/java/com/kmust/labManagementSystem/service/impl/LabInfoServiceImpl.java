@@ -2,8 +2,7 @@ package com.kmust.labManagementSystem.service.impl;
 
 import com.kmust.labManagementSystem.dao.BasicInfoDao;
 import com.kmust.labManagementSystem.dao.BfDao;
-import com.kmust.labManagementSystem.mapper.LabInfoMapper;
-import com.kmust.labManagementSystem.mapper.UserMapper;
+import com.kmust.labManagementSystem.mapper.labMapper.LabInfoMapper;
 import com.kmust.labManagementSystem.service.LabInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

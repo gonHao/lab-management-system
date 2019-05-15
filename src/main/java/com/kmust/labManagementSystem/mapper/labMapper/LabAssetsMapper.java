@@ -1,4 +1,4 @@
-package com.kmust.labManagementSystem.mapper;
+package com.kmust.labManagementSystem.mapper.labMapper;
 
 import com.kmust.labManagementSystem.dao.AcDao;
 import com.kmust.labManagementSystem.dao.AdDao;

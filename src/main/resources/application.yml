@@ -4,7 +4,7 @@ server:
     timeout: 300
 spring:
   datasource:
-    url:  jdbc:mysql://localhost:3306/admin?serverTimezone=UTC&noDatetimeStringSync=true&characterEncoding=utf8&useAffectedRows=true
+    url:  jdbc:mysql://localhost:3306/test?serverTimezone=UTC&noDatetimeStringSync=true&characterEncoding=utf8&useAffectedRows=true
     username: root
     password: root
     driver-class-name:  com.mysql.jdbc.Driver

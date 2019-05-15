@@ -2,10 +2,9 @@ package com.kmust.labManagementSystem.controller.adminController;
 
 import com.kmust.labManagementSystem.dao.UserInfo;
 import com.kmust.labManagementSystem.dao.userDao.UserPerission;
-import com.kmust.labManagementSystem.mapper.UserMapper;
+import com.kmust.labManagementSystem.mapper.labMapper.UserMapper;
 import com.kmust.labManagementSystem.service.UserPermService;
 import com.kmust.labManagementSystem.service.UserService;
-import org.apache.tomcat.util.http.fileupload.disk.DiskFileItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

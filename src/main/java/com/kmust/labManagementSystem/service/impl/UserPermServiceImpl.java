@@ -4,7 +4,7 @@ import com.kmust.labManagementSystem.dao.UserInfo;
 import com.kmust.labManagementSystem.dao.userDao.ModuleInfo;
 import com.kmust.labManagementSystem.dao.userDao.UserModuleMap;
 import com.kmust.labManagementSystem.dao.userDao.UserPerission;
-import com.kmust.labManagementSystem.mapper.UserMapper;
+import com.kmust.labManagementSystem.mapper.labMapper.UserMapper;
 import com.kmust.labManagementSystem.mapper.userMapper.ModuleInfoMapper;
 import com.kmust.labManagementSystem.mapper.userMapper.UserModuleMapMapper;
 import com.kmust.labManagementSystem.service.UserPermService;

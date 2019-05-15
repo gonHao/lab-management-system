@@ -2,7 +2,7 @@ package com.kmust.labManagementSystem.service.impl;
 
 import com.kmust.labManagementSystem.dao.UserInfo;
 import com.kmust.labManagementSystem.dao.userDao.UserPerission;
-import com.kmust.labManagementSystem.mapper.UserMapper;
+import com.kmust.labManagementSystem.mapper.labMapper.UserMapper;
 import com.kmust.labManagementSystem.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

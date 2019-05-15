@@ -4,10 +4,9 @@ import com.kmust.labManagementSystem.dao.AcDao;
 import com.kmust.labManagementSystem.dao.AdDao;
 import com.kmust.labManagementSystem.dao.BsDao;
 import com.kmust.labManagementSystem.dao.LabAssetsDao;
-import com.kmust.labManagementSystem.mapper.LabAssetsMapper;
+import com.kmust.labManagementSystem.mapper.labMapper.LabAssetsMapper;
 import com.kmust.labManagementSystem.service.LabAssetsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
