@@ -51,4 +51,20 @@
 </div>
 
 </body>
+<script src="jquery-3.3.1.js"></script>
+<script>
+	$(function(){
+	function isEmpty(obj){
+    if(typeof obj == "undefined" || obj == null || obj == ""){
+        return true;
+    }else{
+        return false;
+    }
+}
+	 	var e = window.location.search;
+		if(!isEmpty(e)){
+			alert("用户名或密码错误！")
+		}
+	});
+</script>
 </html>

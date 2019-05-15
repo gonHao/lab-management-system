@@ -5,6 +5,8 @@ public class UserInfo {
     private String userPwd;
     private String name;
     private String createDate;
+    private String userType;
+    private String state;
     private String note;
 
     public String getUserNm() {
@@ -47,6 +49,22 @@ public class UserInfo {
         this.note = note;
     }
 
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
     @Override
     public String toString() {
         return "UserInfo{" +
@@ -54,6 +72,8 @@ public class UserInfo {
                 ", userPwd='" + userPwd + '\'' +
                 ", name='" + name + '\'' +
                 ", createDate='" + createDate + '\'' +
+                ", userType='" + userType + '\'' +
+                ", state='" + state + '\'' +
                 ", note='" + note + '\'' +
                 '}';
     }

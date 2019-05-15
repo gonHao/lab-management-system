@@ -11,4 +11,15 @@
         insert into user_module_map
         values(#{userNm},#{moduleId})
     </insert>
+    <select id="selectByUserNm" resultMap="BaseResultMap">
+        select *
+        from user_module_map
+        where user_nm = #{userNm}
+    </select>
+
+    <delete id="deleteMap" parameterType="com.kmust.labManagementSystem.dao.userDao.UserModuleMap">
+        delete from user_module_map
+        where user_nm = #{userNm}
+        and module_Id = #{moduleId}
+    </delete>
 </mapper>

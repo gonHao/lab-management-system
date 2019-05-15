@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<div xmlns:th="http://www.thymeleaf.org">
-    <div class="row" >
+<div>
+    <div class="row">
         <form id="findForm" class="form-inline" action="#" method="post" style="margin-bottom: 30px;">
             <div class="form-group">
                 <label class="cls-label">用户名：</label>
@@ -12,33 +12,26 @@
                 <label>角色描述：</label>
                 <input type="text" class="form-control input-sm" id="note" name="note" placeholder="Search">
             </div>
-            <input type="button" class="btn btn-default btn-sm" id="find" style="margin-left: 20px;" value="查 询"/>
-            <input type="button" class="btn btn-success btn-sm" style="margin-left: 20px;" data-toggle="modal"
-                   data-target=".bs-example-modal-lg" value="新 增"/>
+            <input type="button" class="btn btn-primary btn-sm" id="find" style="margin-left: 20px;" value="查 询"/>
+
         </form>
     </div>
-    <div id="table_refresh" th:fragment="table_refresh">
-        <table class="table table-condensed table-hover">
-            <tr>
-                <td>用户名</td>
-                <td>姓名</td>
-                <td>账号创建日期</td>
-                <td>角色描述</td>
-            </tr>
-            <tr th:each="user:${users}">
-                <td th:text="${user.userNm}"></td>
-                <td th:text="${user.name}"></td>
-                <td th:text="${user.createDate}"></td>
-                <td th:text="${user.note}"></td>
-
-                <td>
-                    <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                        <button type="button" class="btn btn-primary">修 改</button>
-                        <button type="button" class="btn btn-danger">删 除</button>
-                    </div>
-                </td>
-            </tr>
-
+    <div class="row">
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" id="mod" data-toggle="modal" data-target=".bs-example-modal-lg" class="btn btn-primary">新增</button>
+            <button type="button" id="update" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">更新</button>
+            <button type="button" id="delete" class="btn btn-primary">删除</button>
+        </div>
+        <div style="margin-left: 539px;">
+            <form id="upExcel" class="form-inline" action="#" enctype="multipart/form-data">
+                <label class="text-primary">批量新增用户：</label>
+                <input type="file"  class="btn btn-default" name="file">
+                <a href="javascript:savePic('/user/addUsersByExcel');" class="btn btn-primary"> 提交 </a>
+            </form>
+        </div>
+    </div>
+    <div>
+        <table id="mytab" class="table table-hover">
         </table>
     </div>
 </div>
@@ -48,7 +41,7 @@
         <form>
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">新增角色信息</h4>
+                    <h4 class="modal-title">管理用户信息</h4>
                 </div>
 
                 <div class="form-group" style="padding-left: 30px;padding-right: 30px;">
@@ -59,16 +52,27 @@
                         </div>
                         <div class="col-xs-4" style="margin-left: 10px;">
                             <label>姓名：</label>
-                            <input type="text" class="form-control" id="addName" name="name" >
+                            <input type="text" class="form-control" id="addName" name="name">
                         </div>
                     </div>
+                    <div class="row" style="margin-left: 0px;margin-right: 0px;">
+                        <div class="col-xs-4">
+                            <label>用户类型：</label>
+                            <input type="text" class="form-control" id="addUserType" name="userType">
+                        </div>
+                        <div class="col-xs-4" style="margin-left: 10px;">
+                            <label>用户状态：</label>
+                            <input type="text" class="form-control" id="addState" name="state">
+                        </div>
+                    </div>
+
                     <div class="col-xs-4">
-                        <label>角色描述：</label>
-                        <input type="text" class="form-control" id="addNote" name="note" >
+                        <label>用户描述：</label>
+                        <input type="text" class="form-control" id="addNote" name="note">
                     </div>
                     <div class="panel panel-default">
                         <!-- Default panel contents -->
-                        <div class="panel-heading">角色权限</div>
+                        <div class="panel-heading">用户权限</div>
                         <!-- List group -->
                         <div class="col-xs-4" style="padding-left: 20px;">
                             <ul class="list-unstyled">
@@ -88,6 +92,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     <button type="button" class="btn btn-primary" id="commit">提交</button>
+                    <button type="button" class="btn btn-primary" id="updateInfo">更新</button>
                 </div>
             </div>
         </form>
@@ -96,13 +101,70 @@
 <script>
     $(function(){
         $.getScript("../../../../../assets/js/userAdmin/admin.js");
+        InitMainTable();
     });
-</script>
 
-<!--<script>-->
-<!--$(function(){-->
-    <!--console.log("11111");-->
-    <!--$.getScript("../../../../assets/js/userAdmin/admin.js");-->
-    <!--aaa();-->
-<!--});-->
-<!--</script>-->
+
+$("#find").click(function(){
+   InitMainTable()
+});
+        function InitMainTable  (){
+            $("#mytab").bootstrapTable('destroy');
+            $('#mytab').bootstrapTable({
+                    url: '/user/findUsers',
+                    method: 'GET',
+                    queryParams: "queryParams",
+                    toolbar: "#toolbar",
+                    sidePagination: "client",
+                    striped: true, // 是否显示行间隔色
+                    queryParams:queryParams,
+                    pageNumber: 1,
+                    uniqueId: "userNm",
+                    pageSize: "10",
+                    pagination: true, // 是否分页
+                    sortable: true, // 是否启用排序
+                    clickToSelect: true,
+                    columns: [
+                    {
+                        checkbox: true,
+                        visible: true
+                    },
+                    {
+                        field: 'userNm',
+                        title: '用户名'
+                    },
+                        {
+                            field: 'name',
+                            title: '姓名'
+                        },
+                        {
+                            field: 'createDate',
+                            title: '创建日期'
+                        },
+                        {
+                            field: 'state',
+                            title: '用户状态'
+                        },
+                        {
+                            field: 'note',
+                            title: '角色描述'
+                        },
+                    ]
+                });
+
+                function queryParams() {
+                    var userInfo = {};
+                    var createDate  = $("#createDate").val();
+                          userInfo.userNm=$("#userNm").val();
+                          userInfo.name=$("#name").val();
+                          userInfo.createDate=createDate.substring(0,4)+createDate.substring(5,7)+createDate.substring(8,10);
+                          userInfo.note=$("#note").val();
+
+                    return userInfo;
+                }
+
+        }
+
+
+
+</script>

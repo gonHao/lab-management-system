@@ -8,6 +8,8 @@
         <result column="name" jdbcType="VARCHAR" property="name" />
         <result column="createDate" jdbcType="VARCHAR" property="createDate" />
         <result column="note" jdbcType="VARCHAR" property="note" />
+        <result column="userType" jdbcType="VARCHAR" property="userType" />
+        <result column="state" jdbcType="VARCHAR" property="state" />
     </resultMap>
     <select id="selectByUserNm" resultMap="BaseResultMap">
         select *
@@ -39,6 +41,15 @@
     </select>
     <insert id="addUser" parameterType="com.kmust.labManagementSystem.dao.UserInfo">
         insert into user_info
-        values(#{userNm},#{userPwd},#{name},#{createDate},#{note})
+        values(#{userNm},#{userPwd},#{name},#{createDate},#{note},#{userType},#{state})
     </insert>
+    <update id="updateInfo" parameterType="com.kmust.labManagementSystem.dao.UserInfo">
+        update user_info
+        set name=#{name},userType=#{userType},state=#{state},note=#{note}
+        where user_nm=#{userNm}
+    </update>
+    <delete id="deleteUser" parameterType="java.lang.String">
+        delete from user_info
+        where user_nm=#{userNm}
+    </delete>
 </mapper>

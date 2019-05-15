@@ -38,6 +38,8 @@ public class UserServiceImpl implements UserService {
         UserInfo userInfo = new UserInfo();
         userInfo.setUserNm(userPerission.getUserNm());
         userInfo.setName(userPerission.getName());
+        userInfo.setUserType(userPerission.getUserType());
+        userInfo.setState(userPerission.getState());
         //第一次新建用户名和密码相同
         String password=passwordEncoder.encode(userPerission.getUserNm());
         userInfo.setUserPwd(password);

@@ -13,6 +13,7 @@ import java.util.Map;
 
 
 @Controller
+@RequestMapping("/tTable")
 public class TimeTablesController {
 @Autowired
 private

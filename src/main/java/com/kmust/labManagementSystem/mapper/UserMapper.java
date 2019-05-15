@@ -2,6 +2,7 @@ package com.kmust.labManagementSystem.mapper;
 
 import com.kmust.labManagementSystem.dao.UserInfo;
 import com.kmust.labManagementSystem.dao.userDao.UserPerission;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -36,4 +37,18 @@ public interface UserMapper {
       * @return
       */
      int addUser(UserInfo userInfo);
+
+     /**
+      * 更新用户 信息
+      * @param userInfo
+      * @return
+      */
+     int updateInfo(UserInfo  userInfo);
+
+     /**
+      * 删除用户
+      * @param userNm
+      * @return
+      */
+     int deleteUser(@Param("userNm") String userNm);
 }

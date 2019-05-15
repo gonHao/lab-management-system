@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kmust.labManagementSystem.mapper.teachingManagementMapper.ClassProjectMapper">
+    <resultMap id="BaseResultMap" type="com.kmust.labManagementSystem.dao.teachingManagementDao.ClassProject">
+        <result column="course_no" jdbcType="VARCHAR" property="courseNo" />
+        <result column="course_type" jdbcType="VARCHAR" property="courseType" />
+        <result column="course_name" jdbcType="VARCHAR" property="courseName" />
+        <result column="course_class" jdbcType="VARCHAR" property="courseClass" />
+        <result column="student_num" jdbcType="VARCHAR" property="studentNum" />
+    </resultMap>
+    <insert id="insertProject" parameterType="com.kmust.labManagementSystem.dao.teachingManagementDao.ClassProject">
+        insert into course_table
+        values(#{courseNo},#{courseType},#{courseName},#{courseClass},#{studentNum})
+    </insert>
+    <select id="selectByCourseName" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select  *
+        from course_table
+        where 1=1
+        <if test="courseName != null and courseName != ''">
+            and course_name like "%"#{courseName}"%"
+        </if>
+    </select>
+    <update id="updateByCourseNo"  parameterType="com.kmust.labManagementSystem.dao.teachingManagementDao.ClassProject">
+        update course_table
+        set course_type=#{courseType},course_name=#{courseName},course_class=#{courseClass},student_num=#{studentNum}
+        where course_no=#{courseNo}
+    </update>
+    <delete id="deleteByCourseNo">
+        delete from course_table
+        where course_no=#{courseNo}
+    </delete>
+
+
+
+</mapper>

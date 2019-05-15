@@ -1,7 +1,7 @@
 $("#delete").click(function (){
     $.ajax({
         type:'get',
-        url:'/deleteClass',
+        url:'/tTable/deleteClass',
         data:{id:classInfo.id},
         contentType: "application/json;charset=UTF-8;",
         dataType:'text',
@@ -45,7 +45,7 @@ $("#commit").click(function (){
     console.log(addClassInfo);
     $.ajax({
         type:'post',
-        url:'/addClass',
+        url:'/tTable/addClass',
         data:JSON.stringify(addClassInfo),
         contentType: "application/json;charset=UTF-8;",
         dataType:'text',

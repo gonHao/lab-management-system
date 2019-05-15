@@ -2,9 +2,10 @@ package com.kmust.labManagementSystem.mapper.userMapper;
 
 import com.kmust.labManagementSystem.dao.userDao.ModuleInfo;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
-
+@Component
 public interface ModuleInfoMapper {
     /**
      * 根据权限名查询权限信息

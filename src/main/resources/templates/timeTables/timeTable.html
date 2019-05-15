@@ -25,7 +25,13 @@
     </button>
     <input type="button" class="btn btn-success btn-sm" style="margin-left: 20px;" data-toggle="modal"
            data-target=".bs-example-modal-lg" id="addClassB"  value="新 增"/>
-
+    <div style="margin-left: 160px;">
+        <form id="upExcel" class="form-inline" action="#" enctype="multipart/form-data">
+            <label class="text-primary">批量添加课程安排：</label>
+            <input type="file" class="btn btn-default" name="file">
+            <a href="javascript:savePic();"  class="btn btn-primary"> 提交 </a>
+        </form>
+    </div>
 </div>
 <div id="coursesTable"></div>
 <input type="button" id="check" class="btn btn-success btn-sm" style="display: none;" data-toggle="modal"
@@ -170,7 +176,7 @@ var classInfo={};
         classInfo.classroom_no=$("#className").val();
         $.ajax({
             type:'get',
-            url:'/findTimeTables',
+            url:'/tTable/findTimeTables',
             data:{week:$("#weekNo").val(),classroom_no:$("#className").val()},
             contentType: "application/json;charset=UTF-8;",
             dataType:'json',
@@ -190,7 +196,7 @@ var classInfo={};
                       classInfo.id = e.name.split("@")[1];
                           $.ajax({
                                 type:'get',
-                                url:'/findClassInfo',
+                                url:'/tTable/findClassInfo',
                                 data:{id:classInfo.id},
                                 contentType: "application/json;charset=UTF-8;",
                                 dataType:'json',
