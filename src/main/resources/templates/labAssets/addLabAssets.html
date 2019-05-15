@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<div xmlns:th="http://www.w3.org/1999/xhtml">
+    <style>
+        tr{
+            width: 100%;
+            height: 40px;
+        }
+        table{
+            width: 100%;
+            margin:5px 0 5px 0;
+            border-collapse:separate;
+            border-spacing:0px 10px;
+        }
+        .title{
+            width: 90px;
+            text-align: center;
+        }
+        .input{
+            width: 40%;
+        }
+
+    </style>
+    <h1 style="color: #1b1e21">新建资产</h1>
+    <table>
+        <tr>
+            <td class="title">填单日期</td>
+            <td class="input"><input type="date" class="form-control" aria-label="..." id="ab02"></td>
+            <td class="title">使用部门</td>
+            <td class="input"><input type="text" class="form-control" aria-label="..." id="ab03"></td>
+        </tr>
+        <tr>
+            <td class="title">实验室</td>
+            <td class="input"><select id="ab04" style="width: 100%;height: 38px;border-radius: 5px"></select></td>
+            <td class="title">资产条码</td>
+            <td class="input"><input type="text" class="form-control" aria-label="..." id="ab05"></td>
+        </tr>
+        <tr>
+            <td class="title">资产名称</td>
+            <td class="input"><input type="text" class="form-control" aria-label="..." id="ab06"></td>
+            <td class="title">型号规格</td>
+            <td class="input"><input type="text" class="form-control" aria-label="..." id="ab07"></td>
+        </tr>
+        <tr>
+            <td class="title">单价</td>
+            <td class="input"><input type="text" class="form-control" aria-label="..." id="ab08"></td>
+            <td class="title">生产厂家</td>
+            <td class="input"><input type="text" class="form-control" aria-label="..." id="ab09"></td>
+        </tr>
+        <tr>
+            <td class="title">购置日期</td>
+            <td class="input"><input type="date" class="form-control" aria-label="..." id="ab10"></td>
+            <td class="title">存放校区</td>
+            <td class="input"><input type="text" class="form-control" aria-label="..." id="ab11"></td>
+        </tr>
+        <tr>
+            <td class="title">存放地点</td>
+            <td class="input"><input type="text" class="form-control" aria-label="..." id="ab12"></td>
+            <td class="title">资产现状</td>
+            <td class="input"><input type="text" class="form-control" aria-label="..." id="ab13"></td>
+        </tr>
+        <tr>
+            <td class="title">保管人</td>
+            <td class="input"><input type="text" class="form-control" aria-label="..." id="ab14"></td>
+            <td class="title">保管人工号</td>
+            <td class="input"><input type="text" class="form-control" aria-label="..." id="ab15"></td>
+        </tr>
+        <tr>
+            <td class="title">备注</td>
+            <td class="input"><input type="text" class="form-control" aria-label="..." id="ab16"></td>
+            <td class="title">原序列号</td>
+            <td class="input"><input type="text" class="form-control" aria-label="..." id="ab17"></td>
+        </tr>
+        <tr>
+            <td class="title"></td>
+            <td class="input"></td>
+            <td class="title"></td>
+            <td class="input">    <button type="button" class="btn btn-primary" style="float: right" onclick="add()">添&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;加</button>
+            </td>
+        </tr>
+    </table>
+
+
+
+
+</div>
+
+<script>
+    $(document).ready(function (){
+        $.ajax({
+            type: "POST",
+            url: "LabInfo/getAllInfo",
+            data: {},
+            dataType: "text",
+            success: function(data){
+                data=JSON.parse(data);
+                var aa04;
+                for(var j=0;j<data.length;j++) {
+                    if(data[j].aa04.toString().length<2){
+                        aa04="0"+data[j].aa04;
+                    }else{
+                        aa04=data[j].aa04;
+                    }
+                    $("#ab04").append("<option value='" + data[j].aa01 + "'>" + data[j].aa02 + data[j].aa03 + aa04 + "</option>");
+                }
+            }
+        });
+
+
+    });
+
+    function add(){
+        $.ajax({
+            type: "POST",
+            url: "/labAssets/addAssets",
+            data: {ab02:$("#ab02").val(),ab03:$("#ab03").val(),ab04:$("#ab04").val(),ab05:$("#ab05").val(),
+                ab06:$("#ab06").val(),ab07:$("#ab07").val(),ab08:$("#ab08").val(),ab09:$("#ab09").val(),
+                ab10:$("#ab10").val(), ab11:$("#ab11").val(), ab12:$("#ab12").val(), ab13:$("#ab13").val(),
+                ab14:$("#ab14").val(), ab15:$("#ab15").val(), ab16:$("#ab16").val(), ab17:$("#ab17").val()
+            },
+            dataType: "text",
+            success: function(data){
+
+                alert(data);
+
+
+            }
+        });
+    }
+
+
+
+
+</script>
+
+</html>

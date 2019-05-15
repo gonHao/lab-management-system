@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<div xmlns:th="http://www.w3.org/1999/xhtml">
+    <h1 style="color: #1b1e21">耗材库存清单</h1>
+    <table id="mytab" class="table table-hover"></table>
+    <script>
+        $('#mybtn').click(function () {
+
+
+
+        })
+        $('#mytab').bootstrapTable({
+            url: 'consumables/queryBc',
+            queryParams: "queryParams",
+            toolbar: "#toolbar",
+            sidePagination: "true",
+            striped: true, // 是否显示行间隔色
+            queryParams:queryParams,
+            uniqueId: "id",
+            pageSize: "5",
+            pagination: true, // 是否分页
+            sortable: true, // 是否启用排序
+            clickToSelect: true,
+            columns: [{
+                field: 'bc01',
+                title: '序号'
+            },
+                {
+                    field: 'bc02',
+                    title: '物品名称'
+                },
+                {
+                    field: 'bc03',
+                    title: '规格型号'
+                },
+                {
+                    field: 'bc05',
+                    title: '库存数量'
+                },
+                {
+                    field: 'bc06',
+                    title: '单位'
+                },
+
+
+            ]
+        });
+
+        function queryParams(params) {
+            var temp = {
+                ad04:$("#ad04").val()
+            };
+            return temp;
+        }
+
+    </script>
+
+
+
+</div>
+
+</html>

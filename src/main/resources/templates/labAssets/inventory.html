@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<div xmlns:th="http://www.w3.org/1999/xhtml">
+    <h1 style="color: #1b1e21">资产清点</h1>
+
+    <!--搜索框-->
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="input-group">
+                <select class="form-control" placeholder="实验室序号" id="ab04"></select>
+            </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+        <div class="col-lg-6">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="保管人" id="ab14">
+                <span class="input-group-btn">
+                 <button class="btn btn-default" type="button" id="mybtn">查询!</button>
+                </span>
+            </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+    </div><!-- /.row -->
+</div>
+<table id="mytab" class="table table-hover"></table>
+<button type="button" class="btn btn-primary" style="float: right" onclick="exportExcel()">导&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;出</button>
+<script>
+    $(document).ready(function (){
+        $.ajax({
+            type: "POST",
+            url: "LabInfo/getAllInfo",
+            data: {},
+            dataType: "text",
+            success: function(data){
+                data=JSON.parse(data);
+                var aa04;
+                $("#ab04").append("<option value=''>请选择实验室</option>")
+                for(var j=0;j<data.length;j++) {
+                    if(data[j].aa04.toString().length<2){
+                        aa04="0"+data[j].aa04;
+                    }else{
+                        aa04=data[j].aa04;
+                    }
+                    $("#ab04").append("<option value='" + data[j].aa01 + "'>" + data[j].aa02 + data[j].aa03 + aa04 + "</option>");
+                }
+            }
+        });
+
+
+    });
+    $('#mybtn').click(function () {
+
+        $("#mytab").bootstrapTable('refresh');
+
+    })
+    $('#mytab').bootstrapTable({
+        url: 'labAssets/queryAssets',
+        queryParams: "queryParams",
+        toolbar: "#toolbar",
+        sidePagination: "true",
+        striped: true, // 是否显示行间隔色
+        queryParams:queryParams,
+        uniqueId: "id",
+        pageSize: "5",
+        pagination: true, // 是否分页
+        sortable: true, // 是否启用排序
+        clickToSelect: true,
+        columns: [{
+            field: 'ab01',
+            title: '序号'
+        },
+            {
+                field: 'ab02',
+                title: '填单日期'
+            },
+            {
+                field: 'ab03',
+                title: '使用部门'
+            },
+            {
+                field: 'ab04',
+                title: '实验室'
+            },
+            {
+                field: 'ab05',
+                title: '资产条码'
+            },
+            {
+                field: 'ab06',
+                title: '资产名称'
+            },
+            {
+                field: 'ab07',
+                title: '型号规格'
+            },
+            {
+                field: 'ab08',
+                title: '单价'
+            },
+            {
+                field: 'ab09',
+                title: '生产厂家'
+            },
+            {
+                field: 'ab10',
+                title: '购置日期'
+            },
+            {
+                field: 'ab14',
+                title: '保管人'
+            },
+            {
+                field: 'ab16',
+                title: '备注'
+            },
+            {
+                field: 'ab12',
+                title: '存放地点'
+            },
+
+
+        ],
+        onLoadSuccess:function(data){
+            JSONData=data;
+        }
+    });
+    //操作栏的格式化
+
+    var JSONData;
+    function exportExcel() {
+        //json数据转excel
+        //先转化json
+        var arrData = JSONData;
+        var excel = '<table>';
+        var row = "<tr>";
+        //设置表头
+        var keys = Object.keys(JSONData[0]);
+
+        row += '<td>序号</td><td>填单日期</td><td>使用部门</td>' +
+            '<td>资产条码</td><td>资产名称</td><td>型号规格</td>' +
+            '<td>单价</td><td>生产厂家</td><td>购置日期</td><td>存放校区</td>'+
+            '<td>存放地点</td><td>资产现状</td><td>保管人</td><td>保管人工号</td>'+
+            '<td>备注</td><td>原序列号</td>';
+
+        //换行
+        excel += row + "</tr>";
+        //设置数据
+        for (var i = 0; i < arrData.length; i++) {
+            var row = "<tr>";
+            for (var index in arrData[i]) {
+                console.log(index);
+                if(index!="ab04"){
+                    row += '<td>' + arrData[i][index] + '</td>';
+                }
+            }
+            excel += row + "</tr>";
+        }
+        excel += "</table>";
+        var excelFile = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns='http://www.w3.org/TR/REC-html40'>";
+        excelFile += '<meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8">';
+        excelFile += '<meta http-equiv="content-type" content="application/vnd.ms-excel';
+        excelFile += '; charset=UTF-8">';
+        excelFile += "<head>";
+        excelFile += "<!--[if gte mso 9]>";
+        excelFile += "<xml>";
+        excelFile += "<x:ExcelWorkbook>";
+        excelFile += "<x:ExcelWorksheets>";
+        excelFile += "<x:ExcelWorksheet>";
+        excelFile += "<x:Name>";
+        excelFile += "{worksheet}";
+        excelFile += "</x:Name>";
+        excelFile += "<x:WorksheetOptions>";
+        excelFile += "<x:DisplayGridlines/>";
+        excelFile += "</x:WorksheetOptions>";
+        excelFile += "</x:ExcelWorksheet>";
+        excelFile += "</x:ExcelWorksheets>";
+        excelFile += "</x:ExcelWorkbook>";
+        excelFile += "</xml>";
+        excelFile += "<![endif]-->";
+        excelFile += "</head>";
+        excelFile += "<body>";
+        excelFile += excel;
+        excelFile += "</body>";
+        excelFile += "</html>";
+        var uri = 'data:application/vnd.ms-excel;charset=utf-8,' + encodeURIComponent(excelFile);
+        var link = document.createElement("a");
+        link.href = uri;
+        link.style = "visibility:hidden";
+        link.download = "资产清单" + ".xls";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+    }
+
+
+    //参数
+    function queryParams(params) {
+        var temp = {
+            ab04:$("#ab04").val(),
+            ab14:$("#ab14").val()
+        };
+        return temp;
+    }
+    //操作的函数
+    function EditViewById(id){
+        $('#myModal').modal("show");
+        $('#save').attr('title',''+id+'');
+    }
+    //修改保存
+    $('#save').click(function () {
+        var id = $("#save").attr('title');
+        if(id==null||id==''){
+            return;
+        }else{
+            $.ajax({
+                type: "POST",
+                url: "labAssets/ApplyNewCode",
+                data: {ab01:id},
+                dataType: "text",
+                success: function(data){
+
+                }
+            });
+        }
+    })
+
+    //设置模态框居中
+    $('#myModal').on('show.bs.modal',function(e){
+
+    })
+    function centerModals() {
+        $('#myModal').each(function(i) {
+            var $clone = $(this).clone().css('display','block').appendTo('body');
+            var top = Math.round(($clone.height() - $clone.find('.modal-content').height()) / 2);
+            top = top > 0 ? top : 0;
+            $clone.remove();
+            $(this).find('.modal-content').css("margin-top", top);
+        });
+    };
+    $('#myModal').on('show.bs.modal', centerModals);
+    //页面大小变化是仍然保证模态框水平垂直居中
+    $(window).on('resize', centerModals);
+    $("#myModal1").modal({backdrop: 'static', keyboard: false});
+
+</script>
+<style>
+    #mytab tr:nth-child(even){
+        background:#f4f8fb;
+    }
+</style>
+</html>

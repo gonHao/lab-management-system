@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<div xmlns:th="http://www.w3.org/1999/xhtml">
+    <h1 style="color: #1b1e21">添加实验室</h1>
+<form id="myform">
+    <div class="form-group">
+        <label for="aa02">楼栋</label>
+        <input type="text"class="form-control" id="aa02" name="aa02" >
+    </div>
+    <div class="form-group">
+        <label for="aa03">楼层</label>
+        <input type="text" class="form-control" id="aa03"   name="aa03" placeholder="请填入数字">
+    </div>
+    <div class="form-group">
+        <label for="aa04">房号</label>
+        <input type="text" class="form-control" id="aa04"  name="aa04"  placeholder="如5号房间填入5">
+    </div>
+    <div class="form-group">
+        <label for="aa05">房间使用功能或名称</label>
+        <input type="text" class="form-control" id="aa05"  name="aa05"  >
+    </div>
+    <div class="form-group">
+        <label for="aa06">面积</label>
+        <input type="text" class="form-control" id="aa06"   name="aa06" placeholder="单位平方，只需填入数字，如100平方，填入100">
+    </div>
+    <div class="form-group">
+        <label for="aa07">备注</label>
+        <input type="text" class="form-control" id="aa07" name="aa07"  >
+    </div>
+    <div class="form-group">
+        <label for="aa09">管理人工号</label>
+        <input type="text" class="form-control" id="aa09" name="aa07"  >
+    </div>
+    <div  class="btn btn-default" style="background-color: #2f6f9f" onclick="add()">添  加</div>
+    <div type="reset" style="display:none;"></div>
+</form>
+    <!--<button  class="btn btn-default" style="background-color: #2f6f9f" onclick="add()">添  加</button>-->
+    <!--<button type="reset" style="display:none;"></button>-->
+</div>
+<script>
+    function add(){
+        $.ajax({
+            type: "POST",
+            url: "LabInfo/addBasicInfo01",
+            data: {aa02:$("#aa02").val(), aa03:$("#aa03").val(),aa04:$("#aa04").val(),aa05:$("#aa05").val(),
+                aa06:$("#aa06").val(),aa07:$("#aa07").val(),aa09:$("#aa09").val()},
+            dataType: "text",
+            success: function(data){
+
+               alert(data);
+
+                $("button[type='reset']").trigger("click");
+            }
+        });
+    }
+
+</script>
+</html>

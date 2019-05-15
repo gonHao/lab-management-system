@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<div xmlns:th="http://www.w3.org/1999/xhtml">
+    <h1 style="color: #1b1e21">条码申请管理</h1>
+
+    <!--搜索框-->
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="处理标志（0已处理，1未处理）" id="ad04">
+            </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+        <div class="col-lg-6">
+            <div class="input-group">
+                 <button class="btn btn-default" type="button" id="mybtn">查询!</button>
+                </span>
+            </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+    </div><!-- /.row -->
+</div>
+<table id="mytab" class="table table-hover"></table>
+<script>
+    $('#mybtn').click(function () {
+
+        $("#mytab").bootstrapTable('refresh');
+
+    })
+    $('#mytab').bootstrapTable({
+        url: 'labAssets/queryCodeMissing',
+        queryParams: "queryParams",
+        toolbar: "#toolbar",
+        sidePagination: "true",
+        striped: true, // 是否显示行间隔色
+        queryParams:queryParams,
+        uniqueId: "id",
+        pageSize: "5",
+        pagination: true, // 是否分页
+        sortable: true, // 是否启用排序
+        clickToSelect: true,
+        columns: [{
+            field: 'ad01',
+            title: '序号'
+        },
+            {
+                field: 'ad02',
+                title: '申请人工号'
+            },
+            {
+                field: 'ad03',
+                title: '申请的资产序号'
+            },
+            {
+                field: 'ad04',
+                title: '处理标志'
+            },
+            {
+                field: 'ad05',
+                title: '申请理由'
+            },
+            {
+                field: 'ad06',
+                title: '申请时间'
+            },
+            {
+                field: 'ad07',
+                title: '处理时间'
+            },
+            {
+                field: 'ad01',
+                title: '操作',
+                width: 120,
+                align: 'center',
+                valign: 'middle',
+                formatter: actionFormatter,
+            },
+
+        ]
+    });
+    //操作栏的格式化
+
+    function actionFormatter(value, row, index) {
+        var id = value;
+        var result = "";
+        result += "<a href='javascript:;' class='btn btn-xs blue' onclick=\"EditViewById('" + id + "')\" title='编辑'><span class='glyphicon glyphicon-align-left'>处理</span></a>";
+        return result;
+    }
+    //参数
+    function queryParams(params) {
+        var temp = {
+            ad04:$("#ad04").val()
+        };
+        return temp;
+    }
+    //操作的函数
+    function EditViewById(id){
+        $.ajax({
+            type: "POST",
+            url: "labAssets/isLeaf",
+            data: {ad01:id},
+            dataType: "text",
+            success: function(data){
+                console.log(data);
+                if(data.toString()=="0"){
+                    alert("不可操作!");
+                }else{
+                    $('#myModal').modal("show");
+                    $('#save').attr('title',''+id+'');
+                }
+            }
+        });
+
+
+    }
+    //修改保存
+    $('#save').click(function () {
+        var id = $("#save").attr('title');
+        if(id==null||id==''){
+            return;
+        }else{
+            $.ajax({
+                type: "POST",
+                url: "labAssets/AddNewCode",
+                data: {ad01:id,ab05:$("#ab05_modal").val()},
+                dataType: "text",
+                success: function(data){
+                    $('#save').attr("title","");
+                    $("#mytab").bootstrapTable('refresh');
+                    $('#ad05_modal').attr('value','');
+                    alert(data);
+                }
+            });
+        }
+    })
+
+    //设置模态框居中
+    $('#myModal').on('show.bs.modal',function(e){
+
+    })
+    function centerModals() {
+        $('#myModal').each(function(i) {
+            var $clone = $(this).clone().css('display','block').appendTo('body');
+            var top = Math.round(($clone.height() - $clone.find('.modal-content').height()) / 2);
+            top = top > 0 ? top : 0;
+            $clone.remove();
+            $(this).find('.modal-content').css("margin-top", top);
+        });
+    };
+    $('#myModal').on('show.bs.modal', centerModals);
+    //页面大小变化是仍然保证模态框水平垂直居中
+    $(window).on('resize', centerModals);
+    $("#myModal1").modal({backdrop: 'static', keyboard: false});
+
+</script>
+<style>
+    #mytab tr:nth-child(even){
+        background:#f4f8fb;
+    }
+</style>
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="myModal" style="margin-top: auto">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">添加新码</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <h1 style="color: #1b1e21">已为其打印新的条码？</h1>
+                </div><!-- /.row -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary"  id="save" title="">确认</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+</html>

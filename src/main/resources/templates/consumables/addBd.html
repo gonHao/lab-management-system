@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<div xmlns:th="http://www.w3.org/1999/xhtml">
+    <style>
+        myp tr{
+            width: 100%;
+            height: 40px;
+        }
+        #myp{
+            width: 100%;
+            margin:5px 0 5px 0;
+            border-collapse:separate;
+            border-spacing:0px 10px;
+        }
+        .title{
+            width: 90px;
+            text-align: center;
+        }
+        .input{
+            width: 40%;
+        }
+
+    </style>
+    <h1 style="color: #1b1e21">耗材的建账登记</h1>
+    <table id="myp">
+        <tr>
+            <td class="title">账单号</td>
+            <td class="input"><input type="text" class="form-control" aria-label="..." id="bd02"></td>
+            <td class="title">耗材名称及规格</td>
+            <td class="input"><select id="bd12" style="width: 100%;height: 38px;border-radius: 5px"></select></td>
+        </tr>
+        <tr>
+            <td class="title">单位</td>
+            <td class="input"><input type="text" class="form-control" aria-label="..." id="bd05" disabled></td>
+            <td class="title">单价</td>
+            <td class="input"><input type="text" class="form-control" aria-label="..." id="bd06"></td>
+        </tr>
+        <tr>
+            <td class="title">数量</td>
+            <td class="input"><input type="text" class="form-control" aria-label="..." id="bd07"></td>
+            <td class="title">金额（元）</td>
+            <td class="input"><input type="text" class="form-control" aria-label="..." id="bd08" disabled></td>
+        </tr>
+        <tr>
+            <td class="title">日期</td>
+            <td class="input"><input type="date" class="form-control" aria-label="..." id="bd09"></td>
+            <td class="title">申购人</td>
+            <td class="input"><input type="text" class="form-control" aria-label="..." id="bd10"></td>
+        </tr>
+        <tr>
+            <td class="title">期号</td>
+            <td class="input"><input type="text" class="form-control" aria-label="..." id="bd11"></td>
+
+        </tr>
+
+        <tr>
+            <td class="title"></td>
+            <td class="input"></td>
+            <td class="title"></td>
+            <td class="input">    <button type="button" class="btn btn-primary" style="float: right" onclick="add()">登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;记</button>
+            </td>
+        </tr>
+    </table>
+
+
+
+    <div class="form-group" style="margin-left: 80px">
+        如果耗材中没有您需要的耗材，请您在 耗材管理——》添加耗材分类 菜单中添加您所需要的耗材
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="input-group">
+            期号：<select id="bd11_s" style="width: 200px;height: 38px;border-radius: 5px"></select>
+            <span class="input-group-btn">
+                 <button class="btn btn-default" type="button" id="mybtn">查询!</button>
+                </span>
+        </div><!-- /input-group -->
+    </div><!-- /.col-lg-6 -->
+</div><!-- /.row -->
+<table id="mytab" class="table table-hover"></table>
+<button type="button" class="btn btn-primary" style="float: right" onclick="exportExcel()">导&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;出</button>
+<script>
+    $(document).ready(function (){
+
+        $.ajax({
+            type: "POST",
+            url: "consumables/queryBc",
+            data: {},
+            dataType: "text",
+            success: function(data){
+
+                data=JSON.parse(data);
+                $("#bd12").append("<option ></option>");
+                for(var j=0;j<data.length;j++) {
+                    $("#bd12").append("<option value='" + data[j].bc01 + "'>" +data[j].bc04 + "</option>");
+                }
+            }
+        });
+        $.ajax({
+            type: "POST",
+            url: "consumables/queryBD11",
+            data: {},
+            dataType: "text",
+            success: function(data){
+                data=JSON.parse(data);
+                $("#bd11_s").append("<option></option>");
+                for(var j=0;j<data.length;j++) {
+                    $("#bd11_s").append("<option value='" + data[j]+ "'>" + data[j]  + "</option>");
+                }
+            }
+        });
+
+
+    });
+    $("#bd12").change(function () {
+        var bd12=$("#bd12").val();
+        if(bd12!=null&&bd12!=""){
+            $.ajax({
+                type: "POST",
+                url: "consumables/queryBC06",
+                data: {bc01:bd12},
+                dataType: "text",
+                success: function(data){
+                    $("#bd05").val(data);
+                }
+            });
+        }else{
+            $("#bd05").val("");
+        }
+    })
+    function add(){
+        $.ajax({
+            type: "POST",
+            url: "/consumables/addBd",
+            data: {bd02:$("#bd02").val(),bd05:$("#bd05").val(),
+                bd06:$("#bd06").val(),bd07:$("#bd07").val(),bd08:$("#bd08").val(),bd09:$("#bd09").val(),
+                bd10:$("#bd10").val(), bd11:$("#bd11").val(), bd12:$("#bd12").val()
+            },
+            dataType: "text",
+            success: function(data){
+                $("#mytab").bootstrapTable('refresh');
+                alert(data);
+
+
+            }
+        });
+    }
+
+    //计算总价
+    $("#bd07").blur(function(){
+        var bb04=$("#bd06").val();
+        var bb06=$("#bd07").val();
+        if(bb04!=null&&bb04!=''&&bb06!=null&&bb06!=''){
+            if(checkNumber(bb04)&&checkNumber(bb06)){
+                var bb04N=parseFloat(bb04);
+                var bb06N=parseFloat(bb06);
+                var bb07=bb04N*bb06N;
+                    $("#bd08").val(bb07);
+            }else{
+                alert("请输入正确的数字！");
+            }
+        }
+
+
+    });
+    $("#bd06").blur(function(){
+        var bb04=$("#bd06").val();
+        var bb06=$("#bd07").val();
+        if(bb04!=null&&bb04!=''&&bb06!=null&&bb06!=''){
+            if(checkNumber(bb04)&&checkNumber(bb06)){
+                var bb04N=parseFloat(bb04);
+                var bb06N=parseFloat(bb06);
+                var bb07=bb04N*bb06N;
+                $("#bd08").val(bb07);
+            }else{
+                alert("请输入正确的数字！");
+            }
+        }
+
+
+    });
+
+
+    function checkNumber(theObj) {
+        var reg = /^[0-9]+.?[0-9]*$/;
+        if (reg.test(theObj)) {
+            return true;
+        }
+        return false;
+    }
+
+    $('#mybtn').click(function () {
+
+        $("#mytab").bootstrapTable('refresh');
+
+    })
+    $('#mytab').bootstrapTable({
+        url: 'consumables/queryBd',
+        queryParams: "queryParams",
+        toolbar: "#toolbar",
+        sidePagination: "true",
+        striped: true, // 是否显示行间隔色
+        queryParams:queryParams,
+        uniqueId: "id",
+        pageSize: "5",
+        pagination: true, // 是否分页
+        sortable: true, // 是否启用排序
+        clickToSelect: true,
+
+        columns: [{
+            field: 'bd01',
+            title: '序号'
+        },
+            {
+                field: 'bd02',
+                title: '账单号'
+            },
+            {
+                field: 'bd03',
+                title: '物品名称'
+            },
+            {
+                field: 'bd04',
+                title: '规格型号'
+            },
+            {
+                field: 'bd05',
+                title: '单位'
+            },
+            {
+                field: 'bd06',
+                title: '单价'
+            },
+            {
+                field: 'bd07',
+                title: '数量'
+            },
+            {
+                field: 'bd08',
+                title: '金额'
+            },
+            {
+                field: 'bd09',
+                title: '日期'
+            },
+            {
+                field: 'bd10',
+                title: '申购人'
+            },
+        ],
+        onLoadSuccess:function(data){
+            JSONData=data;
+        }
+    });
+    //操作栏的格式化
+    //参数
+    var JSONData;
+    function queryParams(params) {
+        var temp = {
+            bd11:$("#bd11_s").val(),
+        };
+        return temp;
+    }
+    function exportExcel() {
+        //json数据转excel
+        //先转化json
+        var arrData = JSONData;
+        var excel = '<table>';
+        var row = "<tr>";
+        //设置表头
+        var keys = Object.keys(JSONData[0]);
+
+        row += '<td>序号</td><td>账单号</td><td>物品名称</td>' +
+            '<td>规格型号</td><td>单位</td><td>单价</td>' +
+            '<td>数量</td><td>金额</td><td>日期</td><td>申购人</td>' ;
+
+        //换行
+        excel += row + "</tr>";
+        //设置数据
+        for (var i = 0; i < arrData.length; i++) {
+            var row = "<tr>";
+            for (var index in arrData[i]) {
+                console.log(index);
+                if(index!="bd09_b"&&index!="bd09_e"&&index!="bd11"&&index!="bd12"){
+                    row += '<td>' + arrData[i][index] + '</td>';
+                }
+            }
+            excel += row + "</tr>";
+        }
+        excel += "</table>";
+        var excelFile = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns='http://www.w3.org/TR/REC-html40'>";
+        excelFile += '<meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8">';
+        excelFile += '<meta http-equiv="content-type" content="application/vnd.ms-excel';
+        excelFile += '; charset=UTF-8">';
+        excelFile += "<head>";
+        excelFile += "<!--[if gte mso 9]>";
+        excelFile += "<xml>";
+        excelFile += "<x:ExcelWorkbook>";
+        excelFile += "<x:ExcelWorksheets>";
+        excelFile += "<x:ExcelWorksheet>";
+        excelFile += "<x:Name>";
+        excelFile += "{worksheet}";
+        excelFile += "</x:Name>";
+        excelFile += "<x:WorksheetOptions>";
+        excelFile += "<x:DisplayGridlines/>";
+        excelFile += "</x:WorksheetOptions>";
+        excelFile += "</x:ExcelWorksheet>";
+        excelFile += "</x:ExcelWorksheets>";
+        excelFile += "</x:ExcelWorkbook>";
+        excelFile += "</xml>";
+        excelFile += "<![endif]-->";
+        excelFile += "</head>";
+        excelFile += "<body>";
+        excelFile += excel;
+        excelFile += "</body>";
+        excelFile += "</html>";
+        var uri = 'data:application/vnd.ms-excel;charset=utf-8,' + encodeURIComponent(excelFile);
+        var link = document.createElement("a");
+        link.href = uri;
+        link.style = "visibility:hidden";
+        link.download = "建账登记表" + ".xls";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+    }
+
+
+
+</script>
+
+</html>

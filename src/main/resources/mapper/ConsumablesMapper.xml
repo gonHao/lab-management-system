@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kmust.labManagementSystem.mapper.ConsumablesMapper">
+    <resultMap id="BaseResultMap" type="com.kmust.labManagementSystem.dao.BcDao">
+        <result column="bc01" jdbcType="INTEGER" property="bc01" />
+        <result column="bc02" jdbcType="VARCHAR" property="bc02" />
+        <result column="bc03" jdbcType="VARCHAR" property="bc03" />
+        <result column="bc05" jdbcType="VARCHAR" property="bc05" />
+        <result column="bc06" jdbcType="VARCHAR" property="bc06" />
+    </resultMap>
+    <resultMap id="BeDao" type="com.kmust.labManagementSystem.dao.BeDao">
+    <result column="be01" jdbcType="INTEGER" property="be01" />
+    <result column="be02" jdbcType="VARCHAR" property="be02" />
+    <result column="be03" jdbcType="VARCHAR" property="be03" />
+    <result column="be04" jdbcType="VARCHAR" property="be04" />
+    <result column="be05" jdbcType="VARCHAR" property="be05" />
+    <result column="be06" jdbcType="VARCHAR" property="be06" />
+    <result column="be07" jdbcType="VARCHAR" property="be07" />
+    <result column="be08" jdbcType="DATE" property="be08" />
+    <result column="be09" jdbcType="VARCHAR" property="be09" />
+    <result column="be10" jdbcType="VARCHAR" property="be10" />
+    <result column="be11" jdbcType="VARCHAR" property="be11" />
+    <result column="be12" jdbcType="VARCHAR" property="be12" />
+</resultMap>
+    <resultMap id="BdDao" type="com.kmust.labManagementSystem.dao.BdDao">
+        <result column="bd01" jdbcType="INTEGER" property="bd01" />
+        <result column="bd02" jdbcType="VARCHAR" property="bd02" />
+        <result column="bd03" jdbcType="VARCHAR" property="bd03" />
+        <result column="bd04" jdbcType="VARCHAR" property="bd04" />
+        <result column="bd05" jdbcType="VARCHAR" property="bd05" />
+        <result column="bd06" jdbcType="VARCHAR" property="bd06" />
+        <result column="bd07" jdbcType="VARCHAR" property="bd07" />
+        <result column="bd08" jdbcType="VARCHAR" property="bd08" />
+        <result column="bd09" jdbcType="DATE" property="bd09" />
+        <result column="bd10" jdbcType="VARCHAR" property="bd10" />
+        <result column="bd11" jdbcType="VARCHAR" property="bd11" />
+        <result column="bd12" jdbcType="VARCHAR" property="bd12" />
+    </resultMap>
+
+    <resultMap id="BbDao" type="com.kmust.labManagementSystem.dao.BbDao">
+        <result column="bb01" jdbcType="INTEGER" property="bb01" />
+        <result column="bb02" jdbcType="VARCHAR" property="bb02" />
+        <result column="bb03" jdbcType="VARCHAR" property="bb03" />
+        <result column="bb04" jdbcType="VARCHAR" property="bb04" />
+        <result column="bb05" jdbcType="VARCHAR" property="bb05" />
+        <result column="bb06" jdbcType="VARCHAR" property="bb06" />
+        <result column="bb07" jdbcType="VARCHAR" property="bb07" />
+        <result column="bb08" jdbcType="VARCHAR" property="bb08" />
+        <result column="bb09" jdbcType="VARCHAR" property="bb09" />
+        <result column="bb10" jdbcType="VARCHAR" property="bb10" />
+        <result column="bb11" jdbcType="VARCHAR" property="bb11" />
+        <result column="bb12" jdbcType="VARCHAR" property="bb12" />
+        <result column="bb13" jdbcType="DATE" property="bb13" />
+        <result column="bb14" jdbcType="VARCHAR" property="bb14" />
+        <result column="bb15" jdbcType="VARCHAR" property="bb15" />
+        <result column="bb16" jdbcType="VARCHAR" property="bb16" />
+        <result column="bb17" jdbcType="VARCHAR" property="bb17" />
+    </resultMap>
+
+    <insert id="addBc">
+        insert into bc(bc02,bc03,bc05,bc06) values(#{bc02},#{bc03},#{bc05},#{bc06})
+
+    </insert>
+
+    <select id="queryBc" resultMap="BaseResultMap">
+        select * from bc where '1'='1'
+        <if test="bc01!=null and bc01!=''">and bc01=#{bc01}</if>
+        <if test="bc02!=null and bc02!=''">and bc02=#{bc02}</if>
+        <if test="bc03!=null and bc03!=''">and bc03=#{bc03}</if>
+    </select>
+
+    <insert id="addBb">
+
+        insert into bb(bb02,bb03,bb04,bb05,bb06,bb07,bb08,bb09,bb10,bb11,bb12,bb13,bb14,bb15,bb16,bb17)
+        values (#{bb02},#{bb03},#{bb04},#{bb05},#{bb06},#{bb07},#{bb08},#{bb09},#{bb10},#{bb11},#{bb12},
+        #{bb13},#{bb14},#{bb15},#{bb16},#{bb17}
+        )
+    </insert>
+
+    <insert id="addBd">
+
+         insert into bd(bd02,bd03,bd04,bd05,bd06,bd07,bd08,bd09,bd10,bd11,bd12)
+        values (#{bd02},#{bd03},#{bd04},#{bd05},#{bd06},#{bd07},#{bd08},#{bd09},#{bd10},#{bd11},#{bd12}
+
+        )
+    </insert>
+
+    <update id="modifyBc05">
+        update bc set bc05=#{bc05} where bc01=#{bc01}
+    </update>
+
+    <insert id="addBe">
+         insert into be(be02,be03,be04,be05,be06,be07,be08,be09,be10,be11,be12)
+        values (#{be02},#{be03},#{be04},#{be05},#{be06},#{be07},#{be08},#{be09},#{be10},#{be11},#{be12}
+
+)
+    </insert>
+
+    <select id="queryBe" resultMap="BeDao">
+        select  * from be where '1'='1'
+        <if test="be11!=null and be11!=''">
+            and be11 =  #{be11}
+        </if>
+
+
+    </select>
+
+
+    <select id="queryBd" resultMap="BdDao">
+        select  * from bd where '1'='1'
+        <if test="bd11!=null and bd11!=''">
+            and bd11 =  #{bd11}
+        </if>
+
+
+
+    </select>
+
+    <select id="queryBb" resultMap="BbDao">
+        select  * from bb where '1'='1'
+        <if test="bb14!=null and bb14!=''">
+            and bb14 =  #{bb14}
+        </if>
+        <if test="bb17!=null and bb17!=''">
+            and bb17 =  #{bb17}
+        </if>
+        <if test="bb01!=null and bb01!=''">
+            and bb01 =  #{bb01}
+        </if>
+
+
+    </select>
+
+    <select id="queryBB14" resultType="java.lang.String">
+
+        select distinct bb14 from bb ;
+
+    </select>
+
+
+    <select id="queryBD11" resultType="java.lang.String">
+
+        select distinct bd11 from bd ;
+
+    </select>
+    
+    <select id="queryBE11"  resultType="java.lang.String">
+             select distinct be11 from be ;
+    </select>
+
+    <update id="modifyBb17">
+        update bb set bb17=#{bb17} where bb01=#{bb01}
+    </update>
+
+</mapper>

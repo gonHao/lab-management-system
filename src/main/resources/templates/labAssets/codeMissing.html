@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<div xmlns:th="http://www.w3.org/1999/xhtml">
+    <h1 style="color: #1b1e21">申请条码</h1>
+
+    <!--搜索框-->
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="input-group">
+                <select class="form-control" placeholder="实验室序号" id="ab04"></select>
+            </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+        <div class="col-lg-6">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="保管人" id="ab14">
+                <span class="input-group-btn">
+                 <button class="btn btn-default" type="button" id="mybtn">查询!</button>
+                </span>
+            </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+    </div><!-- /.row -->
+</div>
+<table id="mytab" class="table table-hover"></table>
+<script>
+
+    $(document).ready(function (){
+        $.ajax({
+            type: "POST",
+            url: "LabInfo/getAllInfo",
+            data: {},
+            dataType: "text",
+            success: function(data){
+                data=JSON.parse(data);
+                var aa04;
+                $("#ab04").append("<option value=''>请选择实验室</option>")
+                for(var j=0;j<data.length;j++) {
+                    if(data[j].aa04.toString().length<2){
+                        aa04="0"+data[j].aa04;
+                    }else{
+                        aa04=data[j].aa04;
+                    }
+                    $("#ab04").append("<option value='" + data[j].aa01 + "'>" + data[j].aa02 + data[j].aa03 + aa04 + "</option>");
+                }
+            }
+        });
+
+
+    });
+    $('#mybtn').click(function () {
+
+        $("#mytab").bootstrapTable('refresh');
+
+    })
+    $('#mytab').bootstrapTable({
+        url: 'labAssets/queryAssets',
+        queryParams: "queryParams",
+        toolbar: "#toolbar",
+        sidePagination: "true",
+        striped: true, // 是否显示行间隔色
+        queryParams:queryParams,
+        uniqueId: "id",
+        pageSize: "5",
+        pagination: true, // 是否分页
+        sortable: true, // 是否启用排序
+        clickToSelect: true,
+        columns: [{
+            field: 'ab01',
+            title: '序号'
+        },
+            {
+                field: 'ab02',
+                title: '填单日期'
+            },
+            {
+                field: 'ab03',
+                title: '使用部门'
+            },
+            {
+                field: 'ab04',
+                title: '实验室'
+            },
+            {
+                field: 'ab05',
+                title: '资产条码'
+            },
+            {
+                field: 'ab06',
+                title: '资产名称'
+            },
+            {
+                field: 'ab07',
+                title: '型号规格'
+            },
+            {
+                field: 'ab08',
+                title: '单价'
+            },
+            {
+                field: 'ab09',
+                title: '生产厂家'
+            },
+            {
+                field: 'ab10',
+                title: '购置日期'
+            },
+            {
+                field: 'ab14',
+                title: '保管人'
+            },
+            {
+                field: 'ab16',
+                title: '备注'
+            },
+            {
+                field: 'ab12',
+                title: '存放地点'
+            },
+
+            {
+                field: 'ab01',
+                title: '操作',
+                width: 120,
+                align: 'center',
+                valign: 'middle',
+                formatter: actionFormatter,
+            },
+
+        ]
+    });
+    //操作栏的格式化
+
+    function actionFormatter(value, row, index) {
+        var id = value;
+        var result = "";
+        result += "<a href='javascript:;' class='btn btn-xs blue' onclick=\"EditViewById('" + id + "')\" title='编辑'><span class='glyphicon glyphicon-align-left'>申请新码</span></a>";
+        return result;
+    }
+    //参数
+    function queryParams(params) {
+        var temp = {
+            ab04:$("#ab04").val(),
+            ab14:$("#ab14").val()
+        };
+        return temp;
+    }
+    //操作的函数
+    function EditViewById(id){
+        $('#myModal').modal("show");
+        $('#save').attr('title',''+id+'');
+    }
+    //修改保存
+    $('#save').click(function () {
+        var id = $("#save").attr('title');
+        if(id==null||id==''){
+            return;
+        }else{
+            $.ajax({
+                type: "POST",
+                url: "labAssets/ApplyNewCode",
+                data: {ab01:id,ad05:$("#ad05_modal").val()},
+                dataType: "text",
+                success: function(data){
+                    $('#save').attr("title","");
+                    $('#ad05_modal').attr('value','');
+                    alert(data);
+                }
+            });
+        }
+    })
+
+    //设置模态框居中
+    $('#myModal').on('show.bs.modal',function(e){
+
+    })
+    function centerModals() {
+        $('#myModal').each(function(i) {
+            var $clone = $(this).clone().css('display','block').appendTo('body');
+            var top = Math.round(($clone.height() - $clone.find('.modal-content').height()) / 2);
+            top = top > 0 ? top : 0;
+            $clone.remove();
+            $(this).find('.modal-content').css("margin-top", top);
+        });
+    };
+    $('#myModal').on('show.bs.modal', centerModals);
+    //页面大小变化是仍然保证模态框水平垂直居中
+    $(window).on('resize', centerModals);
+    $("#myModal1").modal({backdrop: 'static', keyboard: false});
+
+</script>
+<style>
+    #mytab tr:nth-child(even){
+        background:#f4f8fb;
+    }
+</style>
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="myModal" style="margin-top: auto">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">申请新码</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <input type="text" id="ad05_modal" placeholder="申请理由" style="width: 100% ;height: 30px">
+                </div><!-- /.row -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary"  id="save" title="">申请</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+</html>

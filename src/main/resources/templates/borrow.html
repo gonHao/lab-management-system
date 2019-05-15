@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<div xmlns:th="http://www.w3.org/1999/xhtml">
+    <style>
+        myp tr{
+            width: 100%;
+            height: 40px;
+        }
+        #myp{
+            width: 100%;
+            margin:5px 0 5px 0;
+            border-collapse:separate;
+            border-spacing:0px 10px;
+        }
+        .title{
+            width: 90px;
+            text-align: center;
+        }
+        .input{
+            width: 40%;
+        }
+
+    </style>
+    <h1 style="color: #1b1e21">借用钥匙登记</h1>
+    <table id="myp">
+        <tr>
+            <td class="title">借用人</td>
+            <td class="input"><input type="text" class="form-control" aria-label="..." id="bf02"></td>
+            <td class="title">借用理由</td>
+            <td class="input"><input type="text" class="form-control" aria-label="..." id="bf07"></td>
+        </tr>
+        <tr>
+            <td class="title">借用实验室</td>
+            <td class="input"><select id="ab04" style="width: 100%;height: 38px;border-radius: 5px"></select></td>
+            <td class="title">备注</td>
+            <td class="input"><input type="text" class="form-control" aria-label="..." id="bf08"></td>
+        </tr>
+        <tr>
+            <td class="title"></td>
+            <td class="input"></td>
+            <td class="title"></td>
+            <td class="input">    <button type="button" class="btn btn-primary" style="float: right" onclick="add()">登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;记</button>
+            </td>
+        </tr>
+    </table>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="input-group">
+               归还标志 ：<select id="bf06" style="width: 200px;height: 38px;border-radius: 5px">
+                        <option value="">归还标志</option>
+                        <option value="1">已还</option>
+                        <option value="2">未还</option>
+            </select>
+                <span class="input-group-btn">
+                 <button class="btn btn-default" type="button" id="mybtn">查询!</button>
+                </span>
+            </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+    </div><!-- /.row -->
+    <table id="mytab" class="table table-hover"></table>
+
+
+
+</div>
+
+<script>
+    $(document).ready(function (){
+        $.ajax({
+            type: "POST",
+            url: "LabInfo/getAllInfo",
+            data: {},
+            dataType: "text",
+            success: function(data){
+                data=JSON.parse(data);
+                var aa04;
+                for(var j=0;j<data.length;j++) {
+                    if(data[j].aa04.toString().length<2){
+                        aa04="0"+data[j].aa04;
+                    }else{
+                        aa04=data[j].aa04;
+                    }
+                    $("#ab04").append("<option value='"+data[j].aa01+"'>" + data[j].aa02 + data[j].aa03 + aa04 + "</option>");
+                }
+            }
+        });
+
+
+    });
+
+    function add(){
+        $.ajax({
+            type: "POST",
+            url: "/LabInfo/addBorrow",
+            data: {
+                bf02:$("#bf02").val(),bf07:$("#bf07").val(),ab04:$("#ab04").val()
+            },
+            dataType: "text",
+            success: function(data){
+
+                alert(data);
+
+
+            }
+        });
+    }
+
+    $('#mybtn').click(function () {
+
+        $("#mytab").bootstrapTable('refresh');
+
+    })
+    $('#mytab').bootstrapTable({
+        url: 'LabInfo/querybf',
+        queryParams: "queryParams",
+        toolbar: "#toolbar",
+        sidePagination: "true",
+        striped: true, // 是否显示行间隔色
+        queryParams:queryParams,
+        uniqueId: "id",
+        pageSize: "5",
+        pagination: true, // 是否分页
+        sortable: true, // 是否启用排序
+        clickToSelect: true,
+        columns: [{
+            field: 'bf01',
+            title: '序号'
+        },
+            {
+                field: 'bf02',
+                title: '申请人工号'
+            },
+            {
+                field: 'bf03',
+                title: '申请的资产序号'
+            },
+            {
+                field: 'bf04',
+                title: '处理标志'
+            },
+            {
+                field: 'bf05',
+                title: '申请时间'
+            },
+            {
+                field: 'bf06',
+                title: '归还时间'
+            },
+            {
+                field: 'bf07',
+                title: '申请理由'
+            },
+            {
+                field: 'bf08',
+                title: '备注'
+            },
+            {
+                field: 'bf01',
+                title: '操作',
+                width: 120,
+                align: 'center',
+                valign: 'middle',
+                formatter: actionFormatter,
+            },
+
+        ]
+    });
+    //操作栏的格式化
+
+    function actionFormatter(value, row, index) {
+        var id = value;
+        var result = "";
+        result += "<a href='javascript:;' class='btn btn-xs blue' onclick=\"EditViewById('" + id + "')\" title='归还'><span class='glyphicon glyphicon-align-left'>归还</span></a>";
+        return result;
+    }
+    //参数
+    function queryParams(params) {
+        var temp = {
+            bf06:$("#bf06").val()
+        };
+        return temp;
+    }
+    //操作的函数
+    function EditViewById(id){
+        $.ajax({
+            type: "POST",
+            url: "LabInfo/isLeafBf06",
+            data: {bf01:id},
+            dataType: "text",
+            success: function(data){
+                console.log(data);
+                if(data.toString()=="0"){
+                    alert("不可操作!");
+                }else{
+                    $('#myModal').modal("show");
+                    $('#save').attr('title',''+id+'');
+                }
+            }
+        });
+
+
+    }
+    //修改保存
+    $('#save').click(function () {
+        var id = $("#save").attr('title');
+        if(id==null||id==''){
+            return;
+        }else{
+            $.ajax({
+                type: "POST",
+                url: "LabInfo/modifyBf06",
+                data: {bf01:id},
+                dataType: "text",
+                success: function(data){
+                    $('#save').attr("title","");
+                    $("#mytab").bootstrapTable('refresh');
+                    $('#ad05_modal').attr('value','');
+                    alert(data);
+                }
+            });
+        }
+    })
+
+    //设置模态框居中
+    $('#myModal').on('show.bs.modal',function(e){
+
+    })
+    function centerModals() {
+        $('#myModal').each(function(i) {
+            var $clone = $(this).clone().css('display','block').appendTo('body');
+            var top = Math.round(($clone.height() - $clone.find('.modal-content').height()) / 2);
+            top = top > 0 ? top : 0;
+            $clone.remove();
+            $(this).find('.modal-content').css("margin-top", top);
+        });
+    };
+    $('#myModal').on('show.bs.modal', centerModals);
+    //页面大小变化是仍然保证模态框水平垂直居中
+    $(window).on('resize', centerModals);
+    $("#myModal1").modal({backdrop: 'static', keyboard: false});
+
+
+
+</script>
+<style>
+    #mytab tr:nth-child(even){
+        background:#f4f8fb;
+    }
+</style>
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="myModal" style="margin-top: auto">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">归还钥匙</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <h1 style="color: #1b1e21">确定归还钥匙？</h1>
+                </div><!-- /.row -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary"  id="save" title="">确认</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+</html>

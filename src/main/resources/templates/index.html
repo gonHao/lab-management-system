@@ -11,6 +11,7 @@
 
     <!-- Bootstrap core CSS -->
     <link href="../../../../dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../../dist/css/bootstrap-table.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="dashboard.css" rel="stylesheet">
@@ -38,27 +39,38 @@
                     </li>
                     <li class="list"><a href="#">耗材的管理</a>
                         <ul class="items">
-                            <li> <a href="#" class="a">每期耗材的申报 </a></li>
-                            <li> <a href="#" class="a">每期耗材的领用 </a></li>
-                            <li> <a href="#" class="a">每期耗材的建账登记表</a></li>
-                            <li> <a href="#" class="a">所有耗材的库存清单</a></li>
+                            <li> <a href="#" class="a" onclick="loadHtml('consumables/initAddbc')">添加耗材分类 </a></li>
+                            <li> <a href="#" class="a" onclick="loadHtml('consumables/initAddbb')">每期耗材的申报 </a></li>
+                            <li> <a href="#" class="a" onclick="loadHtml('consumables/initAddbe')">每期耗材的领用 </a></li>
+                            <li> <a href="#" class="a" onclick="loadHtml('consumables/initAddbd')">每期耗材的建账登记表</a></li>
+                            <li> <a href="#" class="a" onclick="loadHtml('consumables/querybc')">所有耗材的库存清单</a></li>
                         </ul>
                     </li>
                     <li class="list"><a href="#">实验室资产</a>
                         <ul class="items">
-                            <li> <a href="#"  class="a"> 新建资产 </a></li>
-                            <li> <a href="#"  class="a"> 维护资产 </a></li>
+                            <li> <a href="#"  class="a" onclick="loadHtml('labAssets/initAdd')"> 新建资产 </a></li>
+                            <li> <a href="#"  class="a" onclick="loadHtml('labAssets/initMaintain')"> 资产信息(变更管理员)</a></li>
+                            <li> <a href="#"  class="a" onclick="loadHtml('labAssets/initInventory')"> 资产清点</a></li>
+                            <li> <a href="#"  class="a" onclick="loadHtml('labAssets/initCodeMissing')"> 条码缺失</a></li>
+                            <li> <a href="#"  class="a" onclick="loadHtml('labAssets/initAssestInAndOut')"> 资产的借出</a></li>
+                        </ul>
+                    </li>
+                    <li class="list"><a href="#">管理中心</a>
+                        <ul class="items">
+                            <li> <a href="#"  class="a" onclick="loadHtml('labAssets/initCodeMissingShow')"> 条码申请管理 </a></li>
+                            <li> <a href="#"  class="a" onclick="loadHtml('labAssets/initFeedbackShow')"> 问题反馈查看</a></li>
+                            <li> <a href="#"  class="a" onclick="loadHtml('consumables/initBbManage')"> 耗材申报管理</a></li>
                         </ul>
                     </li>
                     <li class="list"><a href="#">实验室基础信息</a>
                         <ul class="items">
-                            <li> <a href="#"  class="a"> 添加实验室信息 </a></li>
-                            <li> <a href="#"  class="a"> 维护实验室信息 </a></li>
+                            <li> <a href="#"  class="a" onclick="loadHtml('LabInfo/init')"> 添加实验室信息 </a></li>
+                            <li> <a href="#"  class="a" onclick="loadHtml('LabInfo/initModify')"> 维护实验室信息 </a></li>
                         </ul>
                     </li>
                     <li class="list"><a href="#">实验室钥匙管理</a>
                         <ul class="items">
-                            <li> <a href="#"  class="a"> 借用钥匙的登记 </a></li>
+                            <li> <a href="#"  class="a" onclick="loadHtml('LabInfo/initBorrow')"> 借用钥匙的登记 </a></li>
                         </ul>
                     </li>
                     <li class="list"><a href="#">实验室检查记录</a>
@@ -72,6 +84,9 @@
                     <li class="list"><a href="#">实验室模拟</a>
                     </li>
                     <li class="list"><a href="#">个人中心</a>
+                        <ul class="items">
+                            <li> <a href="#"  class="a" onclick="loadHtml('labAssets/initFeedback')"> 问题反馈</a></li>
+                        </ul>
                     </li>
                 </ul>
 
@@ -92,7 +107,8 @@
 </script>
 <script src="../../../../assets/js/vendor/popper.min.js"></script>
 <script src="../../../../dist/js/bootstrap.min.js"></script>
-
+<script src="../../../../dist/js/bootstrap-table.min.js"></script>
+<script src="../../../../dist/js/bootstrap-table-zh-CN.min.js"></script>
 <!-- Icons -->
 <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
 <script>
@@ -118,19 +134,24 @@
            this.classList.add('active');
        } else
        {
-           for (i = 0; i < list.length; i++) {
+           for ( var i = 0; i < list.length; i++) {
                list[i].classList.remove('active');
 
            }
            this.classList.add('active');
        }
    }
-   for (i = 0; i < list.length; i++) {
+
+
+   for ( var i = 0; i < list.length; i++) {
        list[i].addEventListener('click', accordion);
    }
-   for (i = 0; i < list.length; i++) {
+
+
+   for (var i = 0; i < list1.length; i++) {
        list1[i].addEventListener('click', accordion1);
    }
+
    function accordion1(e) {
        e.stopPropagation();
        this.parentElement.parentElement.classList.add('active');

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<div xmlns:th="http://www.w3.org/1999/xhtml">
+    <h1 style="color: #1b1e21">维护实验室</h1>
+
+    <!--搜索框-->
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="楼栋名称" id="aa02">
+            </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+        <div class="col-lg-6">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="楼层" id="aa03">
+                <span class="input-group-btn">
+                 <button class="btn btn-default" type="button" id="mybtn">查询!</button>
+                </span>
+            </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+    </div><!-- /.row -->
+
+    <!--table-->
+    <table id="mytab" class="table table-hover"></table>
+    <script>
+        $('#mybtn').click(function () {
+
+            $("#mytab").bootstrapTable('refresh');
+
+        })
+        $('#mytab').bootstrapTable({
+            url: 'LabInfo/getAllInfo',
+            queryParams: "queryParams",
+            toolbar: "#toolbar",
+            sidePagination: "true",
+            striped: true, // 是否显示行间隔色
+            queryParams:queryParams,
+            uniqueId: "id",
+            pageSize: "5",
+            pagination: true, // 是否分页
+            sortable: true, // 是否启用排序
+            clickToSelect: true,
+            columns: [{
+                field: 'aa01',
+                title: '序号'
+            },
+                {
+                    field: 'aa02',
+                    title: '楼栋名称'
+                },
+                {
+                    field: 'aa03',
+                    title: '楼层'
+                },
+                {
+                    field: 'aa04',
+                    title: '房号'
+                },
+                {
+                    field: 'aa05',
+                    title: '房间使用功能或名称'
+                },
+                {
+                    field: 'aa06',
+                    title: '面积'
+                },
+                {
+                    field: 'aa07',
+                    title: '备注'
+                },
+                {
+                    field: 'aa09',
+                    title: '管理人工号'
+                },
+                {
+                    field: 'aa01',
+                    title: '操作',
+                    width: 120,
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: actionFormatter,
+                },
+
+            ]
+        });
+        //操作栏的格式化
+
+        function actionFormatter(value, row, index) {
+            var id = value;
+            var result = "";
+            result += "<a href='javascript:;' class='btn btn-xs blue' onclick=\"EditViewById('" + id + "')\" title='编辑'><span class='glyphicon glyphicon-align-left'>编辑</span></a>";
+            return result;
+        }
+        //参数
+        function queryParams(params) {
+            var temp = {
+                aa02:$("#aa02").val(),
+                aa03:$("#aa03").val()
+            };
+            return temp;
+        }
+        //操作的函数
+        function EditViewById(id){
+            $('#myModal').modal("show");
+            $.ajax({
+                type: "POST",
+                url: "LabInfo/getLabInfoByAA01",
+                data: {aa01:id},
+                dataType: "text",
+                success: function(data){
+                    data=JSON.parse(data);
+                    $('#aa02_modal').attr('value',''+data.aa02+'');
+                    $('#aa03_modal').attr('value',''+data.aa03+'');
+                    $('#aa04_modal').attr('value',''+data.aa04+'');
+                    $('#aa05_modal').attr('value',''+data.aa05+'');
+                    $('#aa06_modal').attr('value',''+data.aa06+'');
+                    $('#aa07_modal').attr('value',''+data.aa07+'');
+                    $('#aa09_modal').attr('value',''+data.aa09+'');
+                    $('#save').attr('title',''+id+'');
+                }
+            });
+        }
+        //修改保存
+        $('#save').click(function () {
+            var id = $("#save").attr('title');
+            console.log(id);
+            if(id==null||id==''){
+                console.log("我被调用了");
+                return;
+            }else{
+                $.ajax({
+                    type: "POST",
+                    url: "LabInfo/ModifyLabInfoByAA01",
+                    data: {aa01:id,aa05:$('#aa05_modal').val(),aa06:$('#aa06_modal').val(),aa07:$('#aa07_modal').val(),aa09:$('#aa09_modal').val()},
+                    dataType: "text",
+                    success: function(data){
+                        $('#save').attr("title","");
+                        $("#mytab").bootstrapTable('refresh');
+                        $('#aa05_modal').attr('value','');
+                        $('#aa06_modal').attr('value','');
+                        $('#aa07_modal').attr('value','');
+                        $('#aa09_modal').attr('value','');
+                        alert(data);
+                    }
+                });
+            }
+        })
+
+        //设置模态框居中
+        $('#myModal').on('show.bs.modal',function(e){
+
+        })
+        function centerModals() {
+            $('#myModal').each(function(i) {
+                var $clone = $(this).clone().css('display','block').appendTo('body');
+                var top = Math.round(($clone.height() - $clone.find('.modal-content').height()) / 2);
+                top = top > 0 ? top : 0;
+                $clone.remove();
+                $(this).find('.modal-content').css("margin-top", top);
+            });
+        };
+        $('#myModal').on('show.bs.modal', centerModals);
+        //页面大小变化是仍然保证模态框水平垂直居中
+        $(window).on('resize', centerModals);
+        $("#myModal1").modal({backdrop: 'static', keyboard: false});
+
+    </script>
+    <meta charset="UTF-8" />
+    <style>
+        #mytab tr:nth-child(even){
+            background:#f4f8fb;
+        }
+    </style>
+    </head>
+</div>
+
+<!--模态框-->
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="myModal" style="margin-top: auto">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">实验室信息修改</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="input-group">
+                           楼名： <input type="text" class="form-control" placeholder="" id="aa02_modal" disabled>
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                        <div class="input-group">
+                            楼层：<input type="text" class="form-control" placeholder="" id="aa03_modal" disabled>
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                        <div class="input-group">
+                            房号：<input type="text" class="form-control" placeholder="" id="aa04_modal" disabled>
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                        <div class="input-group">
+                            功能：<input type="text" class="form-control" placeholder="" id="aa05_modal">
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                        <div class="input-group">
+                            面积：<input type="text" class="form-control" placeholder="" id="aa06_modal">
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                        <div class="input-group">
+                            备注：<input type="text" class="form-control" placeholder="" id="aa07_modal">
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                        <div class="input-group">
+                            管理人：<input type="text" class="form-control" placeholder="" id="aa09_modal">
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                </div><!-- /.row -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary"  id="save" title="">保存</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+</html>

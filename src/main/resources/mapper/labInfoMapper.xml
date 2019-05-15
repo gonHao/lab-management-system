@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kmust.labManagementSystem.mapper.LabInfoMapper">
+    <resultMap id="BaseResultMap" type="com.kmust.labManagementSystem.dao.BasicInfoDao">
+        <result column="aa01" jdbcType="INTEGER" property="aa01" />
+        <result column="aa02" jdbcType="VARCHAR" property="aa02" />
+        <result column="aa03" jdbcType="VARCHAR" property="aa03" />
+        <result column="aa04" jdbcType="VARCHAR" property="aa04" />
+        <result column="aa05" jdbcType="VARCHAR" property="aa05" />
+        <result column="aa06" jdbcType="VARCHAR" property="aa06" />
+        <result column="aa07" jdbcType="VARCHAR" property="aa07" />
+        <result column="aa09" jdbcType="VARCHAR" property="aa09" />
+    </resultMap>
+    <resultMap id="bfDao" type="com.kmust.labManagementSystem.dao.BfDao">
+        <result column="bf01" jdbcType="INTEGER" property="bf01" />
+        <result column="bf02" jdbcType="VARCHAR" property="bf02" />
+        <result column="bf03" jdbcType="VARCHAR" property="bf03" />
+        <result column="bf04" jdbcType="VARCHAR" property="bf04" />
+        <result column="bf05" jdbcType="VARCHAR" property="bf05" />
+        <result column="bf06" jdbcType="VARCHAR" property="bf06" />
+        <result column="bf07" jdbcType="VARCHAR" property="bf07" />
+        <result column="bf08" jdbcType="VARCHAR" property="bf08" />
+
+    </resultMap>
+
+
+    <insert id="addLabInfo">
+        insert into aa(aa02,aa03,aa04,aa05,aa06,aa07,aa09) values (#{aa02},#{aa03},#{aa04},#{aa05},#{aa06},#{aa07},#{aa09})
+    </insert>
+    <select id="selectLabInfoByNew" resultMap="BaseResultMap">
+        select * from aa where aa02=#{aa02} and
+        aa03=#{aa03} and aa04=#{aa04}
+    </select>
+    <select id="selctAllLabInfo" resultMap="BaseResultMap">
+        select * from aa
+    </select>
+    <select id="selctSomeLabInfo" resultMap="BaseResultMap">
+        select * from aa where '1'='1'
+        <if test="aa02!=null and aa02!=''">and aa02=#{aa02}</if>
+        <if test="aa03!=null and aa03!=''">and aa03=#{aa03}</if>
+    </select>
+    <select id="selctLabInfoByAA01" resultType="com.kmust.labManagementSystem.dao.BasicInfoDao">
+        select * from aa where '1'='1'
+        <if test="aa01!=null and aa01!=''">and aa01=#{aa01}</if>
+    </select>
+
+    <update id="modifyLabInfo">
+        update aa set aa05=#{aa05},aa06=#{aa06},aa07=#{aa07},aa09=#{aa09} where aa01=#{aa01}
+    </update>
+
+    <insert id="addBorrow">
+        insert into bf(bf02,bf03,bf04,bf05,bf07,bf08) values (#{bf02},#{bf03},#{bf04},#{bf05},#{bf07},#{bf08})
+    </insert>
+
+    <select id="queryBf" resultMap="bfDao">
+        select  * from bf where '1'='1'
+        <if test="bf06==1">
+            and bf06  is not null
+
+        </if>
+        <if test="bf06==2">
+            and bf06  is null
+        </if>
+    </select>
+    <select id="selectBfByBf01" resultType="com.kmust.labManagementSystem.dao.BfDao">
+        select * from bf where bf01=#{bf01}
+    </select>
+
+    <update id="ModifyBf06">
+        update bf set bf06=#{bf06} where bf01=#{bf01}
+
+    </update>
+
+</mapper>

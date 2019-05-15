@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<div xmlns:th="http://www.w3.org/1999/xhtml">
+    <h1 style="color: #1b1e21">问题反馈</h1>
+</div>
+<div class="input-group">
+    <input type="text" class="form-control" placeholder="请输入你的问题" aria-describedby="basic-addon2" style="width: 80%;height: 80px;line-height: 30px" id="ac03">
+    <span class="input-group-addon" id="basic-addon2"></span>
+</div>
+<button type="button" class="btn btn-primary" style="float: right;margin-top: 10px;" onclick="add()">反&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;馈</button>
+<script>
+    function add() {
+        $.ajax({
+            type: "POST",
+            url: "labAssets/feedback",
+            data: {ac03:$('#ac03').val()},
+            dataType: "text",
+            success: function(data){
+
+                alert(data);
+            }
+        });
+    }
+
+
+
+</script>
+</html>

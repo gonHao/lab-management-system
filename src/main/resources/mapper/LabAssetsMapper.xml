@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kmust.labManagementSystem.mapper.LabAssetsMapper">
+    <resultMap id="BaseResultMap" type="com.kmust.labManagementSystem.dao.LabAssetsDao">
+        <result column="ab01" jdbcType="INTEGER" property="ab01" />
+        <result column="ab02" jdbcType="DATE" property="ab02" />
+        <result column="ab03" jdbcType="VARCHAR" property="ab03" />
+        <result column="ab04" jdbcType="VARCHAR" property="ab04" />
+        <result column="ab05" jdbcType="VARCHAR" property="ab05" />
+        <result column="ab06" jdbcType="VARCHAR" property="ab06" />
+        <result column="ab07" jdbcType="VARCHAR" property="ab07" />
+        <result column="ab08" jdbcType="DOUBLE" property="ab08" />
+        <result column="ab09" jdbcType="VARCHAR" property="ab09" />
+        <result column="ab10" jdbcType="DATE" property="ab10" />
+        <result column="ab11" jdbcType="VARCHAR" property="ab11" />
+        <result column="ab12" jdbcType="VARCHAR" property="ab12" />
+        <result column="ab13" jdbcType="VARCHAR" property="ab13" />
+        <result column="ab14" jdbcType="VARCHAR" property="ab14" />
+        <result column="ab15" jdbcType="INTEGER" property="ab15" />
+        <result column="ab16" jdbcType="VARCHAR" property="ab16" />
+        <result column="ab17" jdbcType="VARCHAR" property="ab17" />
+    </resultMap>
+    <resultMap id="AcDao" type="com.kmust.labManagementSystem.dao.AcDao">
+        <result column="ac01" jdbcType="INTEGER" property="ac01" />
+        <result column="ac02" jdbcType="VARCHAR" property="ac02" />
+        <result column="ac03" jdbcType="VARCHAR" property="ac03" />
+        <result column="ac04" jdbcType="VARCHAR" property="ac04" />
+    </resultMap>
+    <resultMap id="AdDao" type="com.kmust.labManagementSystem.dao.AdDao">
+        <result column="ad01" jdbcType="INTEGER" property="ad01" />
+        <result column="ad02" jdbcType="VARCHAR" property="ad02" />
+        <result column="ad03" jdbcType="VARCHAR" property="ad03" />
+        <result column="ad04" jdbcType="VARCHAR" property="ad04" />
+        <result column="ad05" jdbcType="VARCHAR" property="ad05" />
+    </resultMap>
+    <resultMap id="BsDao" type="com.kmust.labManagementSystem.dao.BsDao">
+        <result column="bs01" jdbcType="INTEGER" property="bs01" />
+        <result column="bs02" jdbcType="VARCHAR" property="bs02" />
+        <result column="bs03" jdbcType="VARCHAR" property="bs03" />
+        <result column="bs04" jdbcType="VARCHAR" property="bs04" />
+        <result column="bs05" jdbcType="VARCHAR" property="bs05" />
+        <result column="bs06" jdbcType="VARCHAR" property="bs06" />
+        <result column="bs07" jdbcType="VARCHAR" property="bs07" />
+        <result column="bs08" jdbcType="VARCHAR" property="bs08" />
+    </resultMap>
+    <insert id="addAssets" >
+        insert into ab(ab02,ab03,ab04,ab05,ab06,ab07,ab08,ab09,ab10,ab11,ab12,ab13,ab14,ab15,ab16,ab17)
+        values(#{ab02},#{ab03},#{ab04},#{ab05},#{ab06},#{ab07},#{ab08},#{ab09},#{ab10},#{ab11},#{ab12},#{ab13},#{ab14},#{ab15},#{ab16},#{ab17});
+    </insert>
+
+    <select id="queryAll" resultMap="BaseResultMap" >
+        select * from ab  where '1'='1'
+        <if test="ab04!=null and ab04!=''">and ab04=#{ab04}</if>
+        <if test="ab14!=null and ab14!=''">and ab14=#{ab14}</if>
+
+    </select>
+
+    <update id="ModifyAb14" >
+        update ab set ab14=#{ab14},ab15=#{ab15} where ab01=#{ab01}
+    </update>
+
+    <insert id="addFeedback" >
+        insert into ac(ac02,ac03,ac04,ac05) values(#{ac02},#{ac03},'1',#{ac05});
+   </insert>
+
+    <insert id="addAd">
+        insert into ad(ad02,ad03,ad04,ad05,ad06) values(#{ad02},#{ad03},'1',#{ad05},#{ad06})
+    </insert>
+
+    <select id="queryCodeMissing" resultMap="AdDao">
+        select  * from ad where '1'='1'
+        <if test="ad04New!=null and ad04New!=''">and ad04=#{ad04New}</if>
+    </select>
+
+    <select id="queryCodeMissingByAd01" resultMap="AdDao">
+        select  * from ad where ad01=#{ad01};
+    </select>
+
+    <select id="queryAssetsByAb01" resultMap="BaseResultMap">
+        select * from ab where ab01=#{ab01}
+    </select>
+
+    <update id="setNewCode">
+        update ab set ab05=#{ab05},ab17=#{ab17} where ab01=#{ab01}
+
+    </update>
+    <update id="setAd04">
+        update ad set ad04='0',ad07=#{ad07} where ad01=#{ad01}
+    </update>
+
+    <select id="queryAc" resultMap="AcDao">
+
+        select  * from ac where '1' ='1'
+        <if test="ac04New!=null and ac04New!=''">and ac04=#{ac04New}</if>
+    </select>
+
+    <update id="setAc04">
+        update ac set ac04='0' where ac01=#{ac01}
+    </update>
+
+    <select id="getAcDaoByac01" resultMap="AcDao">
+        select  * from ac where ac01=#{ac01}
+    </select>
+
+    <insert id="addBs">
+
+        insert into bs(bs02,bs03,bs04,bs05,bs06,bs08) values(#{bs02},#{bs03},#{bs04},#{bs05},#{bs06},#{bs08})
+    </insert>
+
+
+    <select id="querybs" resultMap="BsDao">
+        select * from bs where '1'='1'
+        <if test="bs03!=null and bs03!=''">
+           and  bs03=#{bs03}
+        </if>
+        order by bs01 desc
+    </select>
+
+    <select id="queryBsByBs01" resultType="com.kmust.labManagementSystem.dao.BsDao">
+        select * from bs where bs01=#{bs01}
+
+    </select>
+
+    <update id="modifyBs07">
+
+        update bs set bs07=#{bs07} where bs01=#{bs01}
+    </update>
+
+
+
+</mapper>
