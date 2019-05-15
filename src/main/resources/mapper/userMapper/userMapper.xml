@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kmust.labManagementSystem.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.kmust.labManagementSystem.dao.UserInfo">
+        <result column="user_nm" jdbcType="VARCHAR" property="userNm" />
+        <result column="user_pwd" jdbcType="VARCHAR" property="userPwd" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="createDate" jdbcType="VARCHAR" property="createDate" />
+        <result column="note" jdbcType="VARCHAR" property="note" />
+        <result column="userType" jdbcType="VARCHAR" property="userType" />
+        <result column="state" jdbcType="VARCHAR" property="state" />
+    </resultMap>
+    <select id="selectByUserNm" resultMap="BaseResultMap">
+        select *
+        from user_info
+        where
+        user_nm = #{username}
+    </select>
+    <select id="findAllUserInfo" resultMap="BaseResultMap">
+        select *
+        from user_info
+    </select>
+
+    <select id="findUserInfo" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select *
+        from user_info
+        where 1=1
+        <if test="userNm != null and userNm != ''">
+            and user_nm like "%"#{userNm}"%"
+        </if>
+        <if test="name != null and name != ''">
+            and name like "%"#{name}"%"
+        </if>
+        <if test="createDate != null and createDate != ''">
+            and createDate like "%"#{createDate}"%"
+        </if>
+        <if test="note != null and note != ''">
+            and note like "%"#{note}"%"
+        </if>
+    </select>
+    <insert id="addUser" parameterType="com.kmust.labManagementSystem.dao.UserInfo">
+        insert into user_info
+        values(#{userNm},#{userPwd},#{name},#{createDate},#{note},#{userType},#{state})
+    </insert>
+    <update id="updateInfo" parameterType="com.kmust.labManagementSystem.dao.UserInfo">
+        update user_info
+        set name=#{name},userType=#{userType},state=#{state},note=#{note}
+        where user_nm=#{userNm}
+    </update>
+    <delete id="deleteUser" parameterType="java.lang.String">
+        delete from user_info
+        where user_nm=#{userNm}
+    </delete>
+</mapper>

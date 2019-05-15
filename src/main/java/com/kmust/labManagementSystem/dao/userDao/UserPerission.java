@@ -1,13 +1,18 @@
-package com.kmust.labManagementSystem.dao;
+package com.kmust.labManagementSystem.dao.userDao;
 
-public class UserInfo {
-    private String userNm;
-    private String userPwd;
-    private String name;
-    private String createDate;
-    private String userType;
-    private String state;
-    private String note;
+import java.util.List;
+
+/**
+ * 管理员可查看的用户信息
+ */
+public class UserPerission {
+    private String userNm;//用户名
+    private String name;//真实姓名
+    private String createDate;//账号创建日期
+    private String userType;//用户类型
+    private String state;//用户状态
+    private String note;//角色描述
+    private List<String> userModule;//拥有权限
 
     public String getUserNm() {
         return userNm;
@@ -15,14 +20,6 @@ public class UserInfo {
 
     public void setUserNm(String userNm) {
         this.userNm = userNm;
-    }
-
-    public String getUserPwd() {
-        return userPwd;
-    }
-
-    public void setUserPwd(String userPwd) {
-        this.userPwd = userPwd;
     }
 
     public String getName() {
@@ -49,6 +46,14 @@ public class UserInfo {
         this.note = note;
     }
 
+    public List<String> getUserModule() {
+        return userModule;
+    }
+
+    public void setUserModule(List<String> userModule) {
+        this.userModule = userModule;
+    }
+
     public String getUserType() {
         return userType;
     }
@@ -67,14 +72,14 @@ public class UserInfo {
 
     @Override
     public String toString() {
-        return "UserInfo{" +
+        return "UserPerission{" +
                 "userNm='" + userNm + '\'' +
-                ", userPwd='" + userPwd + '\'' +
                 ", name='" + name + '\'' +
                 ", createDate='" + createDate + '\'' +
                 ", userType='" + userType + '\'' +
                 ", state='" + state + '\'' +
                 ", note='" + note + '\'' +
+                ", userModule=" + userModule +
                 '}';
     }
 }

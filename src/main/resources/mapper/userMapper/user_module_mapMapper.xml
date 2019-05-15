@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kmust.labManagementSystem.mapper.userMapper.UserModuleMapMapper">
+    <resultMap id="BaseResultMap" type="com.kmust.labManagementSystem.dao.userDao.UserModuleMap">
+        <result column="user_nm" jdbcType="VARCHAR" property="userNm" />
+        <result column="module_Id" jdbcType="VARCHAR" property="moduleId" />
+    </resultMap>
+
+    <insert id="addMap" parameterType="com.kmust.labManagementSystem.dao.userDao.UserModuleMap">
+        insert into user_module_map
+        values(#{userNm},#{moduleId})
+    </insert>
+    <select id="selectByUserNm" resultMap="BaseResultMap">
+        select *
+        from user_module_map
+        where user_nm = #{userNm}
+    </select>
+
+    <delete id="deleteMap" parameterType="com.kmust.labManagementSystem.dao.userDao.UserModuleMap">
+        delete from user_module_map
+        where user_nm = #{userNm}
+        and module_Id = #{moduleId}
+    </delete>
+</mapper>

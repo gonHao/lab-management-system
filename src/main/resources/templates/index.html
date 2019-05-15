@@ -11,8 +11,7 @@
 
     <!-- Bootstrap core CSS -->
     <link href="../../../../dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../../../dist/css/bootstrap-table.min.css" rel="stylesheet">
-
+    <link href="../../../../../dist/css/*.css">
     <!-- Custom styles for this template -->
     <link href="dashboard.css" rel="stylesheet">
     <link href="menu.css" rel="stylesheet">
@@ -21,10 +20,9 @@
 <body>
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">昆明理工大学实验室管理系统</a>
-    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
     <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-            <a class="nav-link" href="#">退出登录</a>
+            <a class="nav-link" href="/logout">退出登录</a>
         </li>
     </ul>
 </nav>
@@ -34,10 +32,12 @@
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
             <div class="sidebar-sticky" style="top: 20px;background-color: #494e53">
                 <ul class="menu">
-                    <li class="list"><a href="#" onclick="loadHtml('userTest')">首页</a>
-
+                    <li class="list" id="admin"><a href="#">用户管理</a>
+                        <ul class="items">
+                            <li> <a href="#" class="a" onclick="loadHtml('user/userPermAdmin')">用户权限管理 </a></li>
+                        </ul>
                     </li>
-                    <li class="list"><a href="#">耗材的管理</a>
+                    <li class="list" id="consumable"><a href="#">耗材的管理</a>
                         <ul class="items">
                             <li> <a href="#" class="a" onclick="loadHtml('consumables/initAddbc')">添加耗材分类 </a></li>
                             <li> <a href="#" class="a" onclick="loadHtml('consumables/initAddbb')">每期耗材的申报 </a></li>
@@ -73,15 +73,15 @@
                             <li> <a href="#"  class="a" onclick="loadHtml('LabInfo/initBorrow')"> 借用钥匙的登记 </a></li>
                         </ul>
                     </li>
-                    <li class="list"><a href="#">实验室检查记录</a>
+                    <li class="list" id="checkTable"><a href="#">实验室检查记录</a>
                     </li>
-                    <li class="list"><a href="#">实验室教学管理</a>
+                    <li class="list" id="teachingAdmin"><a href="#">实验室教学管理</a>
                         <ul class="items">
-                            <li> <a href="#" class="a" > 实验室安排的实验实训 </a></li>
-                            <li> <a href="#"  class="a"> 实验室开设的项目 </a></li>
+                            <li> <a href="#" class="a" onclick="loadHtml('tTable/timeTable')"> 实验室安排的实验实训 </a></li>
+                            <li> <a href="#" class="a" onclick="loadHtml('class/classPro')"> 实验室开设的项目 </a></li>
                         </ul>
                     </li>
-                    <li class="list"><a href="#">实验室模拟</a>
+                    <li class="list" id="simulate"><a href="#">实验室模拟</a>
                     </li>
                     <li class="list"><a href="#">个人中心</a>
                         <ul class="items">
@@ -109,13 +109,30 @@
 <script src="../../../../dist/js/bootstrap.min.js"></script>
 <script src="../../../../dist/js/bootstrap-table.min.js"></script>
 <script src="../../../../dist/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="../../../../assets/js/load.js"></script>
+
 <!-- Icons -->
 <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+<script src="../../../../assets/js/timeTable/Timetables.min.js"></script>
+<script src="../../../../dist/js/bootstrap-table.js"></script>
+<script src="../../../../dist/js/bootstrap-table-zh-CN.js"></script>
 <script>
-      feather.replace()
+      feather.replace();
 
 </script>
+<!-- Graphs -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+<!--<script>-->
+    <!--$(function () {-->
+    <!--var token = $("meta[name='_csrf']").attr("content");-->
+    <!--var header = $("meta[name='_csrf_header']").attr("content");-->
+    <!--$(document).ajaxSend(function (e, xhr, options) {-->
+        <!--xhr.setRequestHeader(header, token);-->
+    <!--});-->
+<!--});-->
+<!--</script>-->
 <script>
+   var userPerission;
    function loadHtml(href){
         $("#testDiv").load(href);
    }
@@ -156,10 +173,47 @@
        e.stopPropagation();
        this.parentElement.parentElement.classList.add('active');
    }
+
+
+
+   $(function(){
+        $.ajax({
+            type:'get',
+            url:'/user/getUserInfo',
+            data:"",
+            contentType: "application/json;charset=UTF-8;",
+            dataType:'json',
+            success:function(data){
+                userPerission=data;
+                var userMods = userPerission.userModule;
+                var role = $(".list");
+                for(var i=0;i<role.length;i++){
+                    if(role[i].id!=null&&role[i].id!=''){
+                        $("#"+role[i].id+"").hide();
+                    }
+                }
+                for(var i=0;i<userMods.length;i++){
+                    for(var j=0;j<role.length;j++){
+                        var str = "ROLE_"+role[j].id;
+                        if(userMods[i]==str){
+                            $("#"+role[j].id+"").show();
+                        }
+                    }
+                }
+                console.log(data);
+            },
+            error:function(){
+                alert("请求失败");
+            }
+        });
+
+
+
+
+   });
 </script>
 
-<!-- Graphs -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+
 <!--<script>-->
 <!--var ctx = document.getElementById("myChart");-->
 <!--var myChart = new Chart(ctx, {-->
