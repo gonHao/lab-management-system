@@ -48,11 +48,12 @@ public class BrowerSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/tTable/**","/class/**","/index").hasRole("teachingAdmin")
                 .antMatchers("/user/**","/index").hasRole("admin")
                 .antMatchers("/index").hasRole("students")
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers("/userTest").hasRole("students")
+
                 .anyRequest().authenticated()
                 .and().csrf().disable();
+        //                .and()
+//                .authorizeRequests()
+//                .antMatchers("/userTest").hasRole("students")
 
 //                .and()
 //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)

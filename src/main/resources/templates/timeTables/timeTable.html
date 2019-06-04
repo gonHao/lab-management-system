@@ -2,11 +2,8 @@
 <div class="row">
     <form class="form-inline" action="#" method="post">
         <label class="cls-label">教室：</label>
-        <input type="text" class="form-control input-sm" id="className" list="itemlist" name="">
-        <datalist id="itemlist">
-            <option>明轩楼405</option>
-            <option>明轩楼605</option>
-        </datalist>
+        <select type="text" class="form-control" id="classroom1" ></select>
+
         <span style="padding-left: 50px;"></span>
         <button type="button" class="btn btn-default btn-sm" onclick="subtract1()">
             <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"><</span>
@@ -47,7 +44,7 @@
                     <div class="row" style="margin-left: 0px;margin-right: 0px;">
                         <div class="col-xs-4">
                             <label>教室选择：</label>
-                            <input type="text" class="form-control" id="classroom" list="itemlist">
+                            <select type="text" class="form-control" id="classroom" ></select>
                         </div>
                         <div class="col-xs-4">
                             <label>课程名称：</label>
@@ -101,6 +98,27 @@
 </div>
 <script>
 $(function(){
+  $.ajax({
+            type: "POST",
+            url: "LabInfo/getAllInfo",
+            data: {},
+            dataType: "text",
+            success: function(data){
+                data=JSON.parse(data);
+                var aa04;
+                for(var j=0;j<data.length;j++) {
+                    if(data[j].aa04.toString().length<2){
+                        aa04="0"+data[j].aa04;
+                    }else{
+                        aa04=data[j].aa04;
+                    }
+                    $("#classroom1").append("<option value='" + data[j].aa01 + "'>" + data[j].aa02 + data[j].aa03 + aa04 + "</option>");
+                    $("#classroom").append("<option value='" + data[j].aa01 + "'>" + data[j].aa02 + data[j].aa03 + aa04 + "</option>");
+                }
+            }
+        });
+
+
         var link = document.createElement('link');
         link.type = 'text/css';
         link.rel = 'stylesheet';
@@ -173,11 +191,11 @@ var classInfo={};
   function onChange(){
   var courseListOther;
         classInfo.weekNo=$("#weekNo").val();
-        classInfo.classroom_no=$("#className").val();
+        classInfo.classroom_no=$("#classroom1").find("option:selected").text();
         $.ajax({
             type:'get',
             url:'/tTable/findTimeTables',
-            data:{week:$("#weekNo").val(),classroom_no:$("#className").val()},
+            data:{week:$("#weekNo").val(),classroom_no:$("#classroom1").find("option:selected").text()},
             contentType: "application/json;charset=UTF-8;",
             dataType:'json',
             success:function(data){

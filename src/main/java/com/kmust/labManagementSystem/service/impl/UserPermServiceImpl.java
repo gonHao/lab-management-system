@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -145,73 +146,79 @@ public class UserPermServiceImpl implements UserPermService {
                 count++;
                 continue;
             }
-            if(row.getCell(0).toString().equals("")){
-                return"用户新增完成";
-            }
-            //获取总列数(空格的不计算)
-            int columnTotalNum = row.getPhysicalNumberOfCells();
-            logger.info("总列数：" + columnTotalNum);
-            logger.info("最大列数：" + row.getLastCellNum());
+            try{
+                if(row.getCell(0)==null){
+                    return"用户新增完成";
+                }
+                //获取总列数(空格的不计算)
+                int columnTotalNum = row.getPhysicalNumberOfCells();
+                logger.info("总列数：" + columnTotalNum);
+                logger.info("最大列数：" + row.getLastCellNum());
 
 
-            UserPerission userPerission = new UserPerission();
+                UserPerission userPerission = new UserPerission();
 
-            String userNm = getCellValue(row,0);
-            if(userNm==null||"".equals(userNm)){
-                return "第"+count+"行，第1格为空，后续用户信息新增失败";
+                String userNm = getCellValue(row,0);
+                if(userNm==null||"".equals(userNm)){
+                    return "第"+count+"行，第1格为空，后续用户信息新增失败";
+                }
+                userPerission.setUserNm(userNm);
+                String name = getCellValue(row,1);
+                if(name==null||"".equals(name)){
+                    return "第"+count+"行，第2格为空，后续用户信息新增失败";
+                }
+                userPerission.setName(name);
+                String ut = getCellValue(row,2);
+                if(ut==null||"".equals(ut)){
+                    return "第"+count+"行，第3格为空，后续用户信息新增失败";
+                }
+                userPerission.setUserType(ut);
+                ArrayList<String> moduleList = new ArrayList<>(8);
+                if(("管理员").equals(ut)){
+                    moduleList.add("admin");
+                    moduleList.add("consumable");
+                    moduleList.add("assets");
+                    moduleList.add("baseInfo");
+                    moduleList.add("key");
+                    moduleList.add("checkTable");
+                    moduleList.add("teachingAdmin");
+                    moduleList.add("simulate");
+                    userPerission.setUserModule(moduleList);
+                }else if(("老师").equals(ut)){
+                    moduleList.add("consumable");
+                    moduleList.add("assets");
+                    moduleList.add("baseInfo");
+                    moduleList.add("key");
+                    moduleList.add("checkTable");
+                    moduleList.add("teachingAdmin");
+                    moduleList.add("simulate");
+                    userPerission.setUserModule(moduleList);
+                }else if(("学生").equals(ut)){
+                    moduleList.add("baseInfo");
+                    moduleList.add("key");
+                    moduleList.add("simulate");
+                    userPerission.setUserModule(moduleList);
+                }else {
+                    return "第"+count+"行，不存在该用户类型";
+                }
+                String state = getCellValue(row,3);;
+                if(state==null||"".equals(state)){
+                    return "第"+count+"行，第4格为空，后续用户信息新增失败";
+                }
+                userPerission.setState(state);
+                String note = getCellValue(row,4);;
+                userPerission.setNote(note);
+                if(!userService.addUser(userPerission)){
+                    return"第"+count+"行用户信息添加失败";
+                }
+                if(!addUserPermission(userPerission)){
+                    return"第"+count+"行用户权限添加失败";
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                return "执行第"+count+"行程序出现异常，后续用户信息新增失败";
             }
-            userPerission.setUserNm(userNm);
-            String name = getCellValue(row,1);
-            if(name==null||"".equals(name)){
-                return "第"+count+"行，第2格为空，后续用户信息新增失败";
-            }
-            userPerission.setName(name);
-            String ut = getCellValue(row,2);
-            if(ut==null||"".equals(ut)){
-                return "第"+count+"行，第3格为空，后续用户信息新增失败";
-            }
-            userPerission.setUserType(ut);
-            ArrayList<String> moduleList = new ArrayList<>(8);
-            if(("管理员").equals(ut)){
-                moduleList.add("admin");
-                moduleList.add("consumable");
-                moduleList.add("assets");
-                moduleList.add("baseInfo");
-                moduleList.add("key");
-                moduleList.add("checkTable");
-                moduleList.add("teachingAdmin");
-                moduleList.add("simulate");
-                userPerission.setUserModule(moduleList);
-            }else if(("老师").equals(ut)){
-                moduleList.add("consumable");
-                moduleList.add("assets");
-                moduleList.add("baseInfo");
-                moduleList.add("key");
-                moduleList.add("checkTable");
-                moduleList.add("teachingAdmin");
-                moduleList.add("simulate");
-                userPerission.setUserModule(moduleList);
-            }else if(("学生").equals(ut)){
-                moduleList.add("baseInfo");
-                moduleList.add("key");
-                moduleList.add("simulate");
-                userPerission.setUserModule(moduleList);
-            }else {
-                return "第"+count+"行，不存在该用户类型";
-            }
-            String state = getCellValue(row,3);;
-            if(state==null||"".equals(state)){
-                return "第"+count+"行，第4格为空，后续用户信息新增失败";
-            }
-            userPerission.setState(state);
-            String note = getCellValue(row,4);;
-            userPerission.setNote(note);
-            if(!userService.addUser(userPerission)){
-                return"第"+count+"行用户信息添加失败";
-            }
-            if(!addUserPermission(userPerission)){
-                return"第"+count+"行用户权限添加失败";
-            }
+
         }
         return "所有用户信息新增成功";
     }

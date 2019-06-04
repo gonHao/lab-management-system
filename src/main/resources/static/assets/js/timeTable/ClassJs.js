@@ -19,7 +19,6 @@ $("#addClassB").click(function (){
      $("#weekDiv").show();
      $("#commit").show();
      $("#delete").hide();
-     $("#classroom").val("");
      $("#classNm").val("");
      $("#beginWeek").val("");
      $("#endWeek").val("");
@@ -33,7 +32,7 @@ $("#addClassB").click(function (){
 
 $("#commit").click(function (){
     var addClassInfo={};
-        addClassInfo.classroomNo=$("#classroom").val(),
+        addClassInfo.classroomNo=$("#classroom").find("option:selected").text(),
         addClassInfo.classNm=$("#classNm").val(),
         addClassInfo.beginWeek=$("#beginWeek").val(),
         addClassInfo.endWeek=$("#endWeek").val(),

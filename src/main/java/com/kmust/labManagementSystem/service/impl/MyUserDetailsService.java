@@ -41,8 +41,7 @@ public class MyUserDetailsService implements UserDetailsService {
         String password  =  userInfo.getUserPwd();
         logger.info("数据库密码："+password);
         return new User(username,password,
-//                true,true,true,true,
+                true,true,true,true,
                 roleCodes);
-//                AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_admin"));
     }
 }

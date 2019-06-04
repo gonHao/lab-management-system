@@ -2,9 +2,8 @@ package com.kmust.labManagementSystem.dao.classBasisInfo;
 
 public class CheckRecord {
     private String id;//记录id
-    private String week;//检查周
-    private String classRoomNo;//教室编号
     private String classRoomName;//实验室名称
+    private String useTimes;//使用时长
     private String state;//状态
     private String date;//检查日期
     private String checkMan;//检查人
@@ -18,28 +17,20 @@ public class CheckRecord {
         this.id = id;
     }
 
-    public String getWeek() {
-        return week;
-    }
-
-    public void setWeek(String week) {
-        this.week = week;
-    }
-
-    public String getClassRoomNo() {
-        return classRoomNo;
-    }
-
-    public void setClassRoomNo(String classRoomNo) {
-        this.classRoomNo = classRoomNo;
-    }
-
     public String getClassRoomName() {
         return classRoomName;
     }
 
     public void setClassRoomName(String classRoomName) {
         this.classRoomName = classRoomName;
+    }
+
+    public String getUseTimes() {
+        return useTimes;
+    }
+
+    public void setUseTimes(String useTimes) {
+        this.useTimes = useTimes;
     }
 
     public String getState() {
@@ -78,9 +69,8 @@ public class CheckRecord {
     public String toString() {
         return "CheckRecord{" +
                 "id='" + id + '\'' +
-                ", week='" + week + '\'' +
-                ", classRoomNo='" + classRoomNo + '\'' +
                 ", classRoomName='" + classRoomName + '\'' +
+                ", useTimes='" + useTimes + '\'' +
                 ", state='" + state + '\'' +
                 ", date='" + date + '\'' +
                 ", checkMan='" + checkMan + '\'' +

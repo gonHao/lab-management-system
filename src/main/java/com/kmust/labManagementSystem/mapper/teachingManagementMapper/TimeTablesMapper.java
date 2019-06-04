@@ -12,4 +12,5 @@ public interface TimeTablesMapper {
     int deleteClass(@Param("id") String id);
     int addClass(TimeTablesInfo timeTablesInfo);
     List<TimeTablesInfo>  findClassInfoList(TimeTablesInfo timeTablesInfo);
+    List<TimeTablesInfo> selectByClassroomNo(@Param("classroomNo") String classroomNo);
 }

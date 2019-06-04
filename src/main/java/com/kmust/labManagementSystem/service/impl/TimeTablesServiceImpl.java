@@ -32,7 +32,10 @@ public class TimeTablesServiceImpl implements TimeTablesService {
                 Integer num = getTimeRange(info);
                 if (num > 0) {
                     for (int i = 0; i < num; i++) {
-                        arr[Integer.parseInt(info.getDay()) - 1][beginLocation + i] = info.getProfClassNo() + info.getTeacherNo() + "@" + info.getId();
+                        arr[Integer.parseInt(info.getDay()) - 1][beginLocation + i] = info.getProfClassNo() + "\n"
+                                +info.getClassName()+"\n"
+                                +info.getTeacherNo()+"\n"
+                                + "@" + info.getId();
                     }
                 } else {
                     arr[Integer.parseInt(info.getDay()) - 1][beginLocation] = info.getProfClassNo() + info.getTeacherNo();

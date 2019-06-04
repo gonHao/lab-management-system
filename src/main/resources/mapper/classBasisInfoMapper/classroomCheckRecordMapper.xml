@@ -4,8 +4,6 @@
 <mapper namespace="com.kmust.labManagementSystem.mapper.classBasisInfoMapper.ClassRoomCheckRecordMapper">
     <resultMap id="BaseResultMap" type="com.kmust.labManagementSystem.dao.classBasisInfo.CheckRecord">
         <result column="id" jdbcType="INTEGER" property="id" />
-        <result column="week" jdbcType="VARCHAR" property="week" />
-        <result column="classroom_no" jdbcType="VARCHAR" property="classRoomNo" />
         <result column="classroom_name" jdbcType="VARCHAR" property="classRoomName" />
         <result column="state" jdbcType="VARCHAR" property="state" />
         <result column="date" jdbcType="VARCHAR" property="date" />
@@ -14,9 +12,21 @@
     </resultMap>
     <insert id="insertRecord" parameterType="com.kmust.labManagementSystem.dao.classBasisInfo.CheckRecord">
         insert into classroom_check_table
-        values(null,#{week},#{classRoomNo},#{classRoomName},#{state},#{date},#{checkMan},#{note})
+        values(null,#{classRoomName},#{state},#{date},#{checkMan},#{note})
     </insert>
 
+    <select id="selectByClassroomName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select *
+        from classroom_check_table
+        where 1=1
+        <if test="classroomName != null and classroomName != ''">
+            and classroom_name like "%"#{classroomName}"%"
+        </if>
+    </select>
+    <delete id="deleteById">
+        delete from classroom_check_table
+        where id=#{id}
+    </delete>
 
 
 

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<div>
+    <div class="row">
+        <form id="findForm" class="form-inline" action="#" method="post" style="margin-bottom: 30px;">
+            <div class="form-group">
+                <label class="cls-label">教室选择：</label>
+                <select type="text" class="form-control" id="classroom1" >
+                    <option></option>
+                </select>
+            </div>
+            <input type="button" class="btn btn-primary btn-sm" id="find" style="margin-left: 20px;" value="查 询"/>
+
+        </form>
+    </div>
+    <div class="btn-group" role="group" aria-label="...">
+        <button type="button" id="mod" data-toggle="modal" data-target=".bs-example-modal-lg" class="btn btn-primary">新增</button>
+        <button type="button" id="delete" class="btn btn-primary">删除</button>
+    </div>
+    <div>
+        <table id="mytab" class="table table-hover">
+        </table>
+    </div>
+</div>
+<!--modal-->
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <form>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">新增检查教室</h4>
+                </div>
+
+                <div class="form-group" style="padding-left: 30px;padding-right: 30px;">
+                    <div class="row" style="margin-left: 0px;margin-right: 0px;">
+                        <div class="col-xs-4">
+                            <label>教室选择：</label>
+                            <select type="text" class="form-control" id="classroom" ></select>
+                        </div>
+                        <div class="col-xs-4" style="margin-left: 10px;">
+                            <label>教室状态：</label>
+                            <input type="text" class="form-control" id="state" list="list">
+                            <datalist id="list">
+                                <option value="可用"></option>
+                                <option value="不可用"></option>
+                            </datalist>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-left: 0px;margin-right: 0px;">
+                        <div class="col-xs-4">
+                            <label>检查者：</label>
+                            <input type="text" class="form-control" id="checkMan">
+                        </div>
+                        <div class="col-xs-4">
+                            <label>备注：</label>
+                            <input type="text" class="form-control" id="note">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="commit">提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+$(function(){
+        $.getScript("../../../../../assets/js/checkRecord/checkRecocrd.js");
+        InitMainTable();
+        $.ajax({
+            type: "POST",
+            url: "LabInfo/getAllInfo",
+            data: {},
+            dataType: "text",
+            success: function(data){
+                data=JSON.parse(data);
+                var aa04;
+                for(var j=0;j<data.length;j++) {
+                    if(data[j].aa04.toString().length<2){
+                        aa04="0"+data[j].aa04;
+                    }else{
+                        aa04=data[j].aa04;
+                    }
+                    $("#classroom1").append("<option value='" + data[j].aa01 + "'>" + data[j].aa02 + data[j].aa03 + aa04 + "</option>");
+                    $("#classroom").append("<option value='" + data[j].aa01 + "'>" + data[j].aa02 + data[j].aa03 + aa04 + "</option>");
+                }
+            }
+        });
+    });
+
+$("#find").click(function(){
+    InitMainTable()
+});
+function InitMainTable  (){
+    $("#mytab").bootstrapTable('destroy');
+    $('#mytab').bootstrapTable({
+        url: '/checkInfo/findCheckRecord',
+        method: 'GET',
+        queryParams: "queryParams",
+        toolbar: "#toolbar",
+        sidePagination: "client",
+        striped: true, // 是否显示行间隔色
+        queryParams:queryParams,
+        pageNumber: 1,
+        uniqueId: "courseNo",
+        pageSize: "10",
+        pagination: true, // 是否分页
+        sortable: true, // 是否启用排序
+        clickToSelect: true,
+        columns: [
+        {
+            checkbox: true,
+            visible: true
+        },
+        {
+            field: 'id',
+            title: 'id',
+            sortable: false
+        },
+        {
+            field: 'classRoomName',
+            title: '教室名称'
+        },
+        {
+            field: 'useTimes',
+            title: '使用时长 '
+        },
+        {
+            field: 'state',
+            title: '状态 '
+        },
+        {
+            field: 'date',
+            title: '检查日期'
+        },
+        {
+            field: 'checkMan',
+            title: '检查人'
+        },
+        {
+            field: 'note',
+            title: '备注'
+        },
+        ]
+    });
+
+    function queryParams() {
+        var classProject = {};
+        classProject.classroomName=$("#classroom1").find("option:selected").text();
+        return classProject;
+    }
+
+}
+
+
+
+</script>

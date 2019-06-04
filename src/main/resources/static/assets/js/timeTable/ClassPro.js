@@ -2,7 +2,9 @@ $("#delete").click(function(){
 var arr = [];
     var classProObj =  $('#mytab').bootstrapTable('getSelections');
     if(classProObj.length>0){
-        confirm("你确定删除该用户吗？");
+        if(confirm("你确定删除该课程吗？")==false){
+            return 0;
+        }
         for(var  i=0;i<classProObj.length;i++){
                 arr.push(classProObj[i].courseNo);
             }
@@ -21,7 +23,7 @@ var arr = [];
                         }
                     });
     }else{
-        confirm("请先选中要删除的用户！");
+        confirm("请先选中要删除的课程！");
 
     }
     console.log(classProObj);
@@ -40,7 +42,7 @@ $("#update").click(function(){
          $("#number").val(updateClassPro.studentNum);
 
     }else{
-        confirm("请先选中一位要修改信息的用户！");
+        confirm("请先选中要修改信息的课程！");
     }
 
 $("#updateInfo").click(function(){

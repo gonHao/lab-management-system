@@ -47,4 +47,10 @@
         and day=#{day}
         and classroom_no = #{classroomNo}
     </select>
+    <select id="selectByClassroomNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select *
+        from time_table
+        where
+        classroom_no = #{classroomNo}
+    </select>
 </mapper>

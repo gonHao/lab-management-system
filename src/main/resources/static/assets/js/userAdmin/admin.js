@@ -2,7 +2,9 @@ $("#delete").click(function(){
 var arr = [];
     var userObj =  $('#mytab').bootstrapTable('getSelections');
     if(userObj.length>0){
-        confirm("你确定删除该用户吗？");
+        if(confirm("你确定删除该用户吗？")==false){
+            return 0;
+        }
         for(var  i=0;i<userObj.length;i++){
                 arr.push(userObj[i].userNm);
             }
@@ -40,7 +42,7 @@ $("#update").click(function(){
          $("#addNote").val(updateUser.note);
          for(i=0;i<8;i++){
                  $("#checkbox"+i+"").prop("checked",false);
-             }``
+             }
          for(var i=0;i<updateUser.userModule.length;i++){
             for(var j=0;j<8;j++){
                 var str  = "ROLE_"+$("#checkbox"+j+"").val();
@@ -57,7 +59,7 @@ $("#update").click(function(){
     }else{
         confirm("请先选中一位要修改信息的用户！");
     }
-
+});
 $("#updateInfo").click(function(){
             var formDate={};
             formDate.userNm=$("#addUserNm").val();
@@ -89,7 +91,7 @@ $("#updateInfo").click(function(){
             });
 });
 
-});
+
 $("#mod").click(function(){
     $("#addUserNm").removeAttr("disabled");
     $("#updateInfo").hide();
