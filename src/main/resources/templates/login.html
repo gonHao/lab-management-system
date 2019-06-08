@@ -1,64 +1,70 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-<meta charset="UTF-8">
-	<link href="../../../../assets/css/login.css" rel="stylesheet">
-<link rel="stylesheet" href="../../../../assets/css/login.css" />
-<title>用户登录-实验室管理系统</title>
+    <meta charset="UTF-8">
+    <link href="../../../../assets/css/login.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../../assets/css/login.css"/>
+    <title>用户登录-实验室管理系统</title>
 </head>
 <body>
 
 <div id="header">
-	<div class="header_title">
-		<span class="title_con">昆明理工大学实验室管理系统</span>
-	</div>
+    <div class="header_title">
+        <span class="title_con">昆明理工大学实验室管理系统</span>
+    </div>
 </div>
 
 <div id="content">
-	<center>
-		<div class="con">
-		<div class="con_title">
-			<span class="con_title_sp">欢迎登录实验室管理系统</span>
-		</div>
-		<div class="con_panel">
-			<form th:action="@{/index}" method="post">
-			<div class="con_input">
-				<span>用户名：</span><input type="text" name="username" placeholder="学号/工号"/>
-			</div>
-			<div class="con_input">
-				<span>密&nbsp;&nbsp;&nbsp;&nbsp;码：</span><input type="password" name="password" placeholder="密码"/>
-			</div>
-			<input type="submit" value="登    录" class="submit-btn"/><br>
-            </form>
-			还没有账号？<a href="regist.html" style="text-decoration: none">注册！</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="re.html" style="text-decoration: none">
-			忘记密码
-		</a>
-		</div>
-	</div>
-	</center>
+    <center>
+        <div class="con">
+            <div class="con_title">
+                <span class="con_title_sp">欢迎登录实验室管理系统</span>
+            </div>
+            <div class="con_panel">
+                <form th:action="@{/index}" method="post">
+                    <div class="con_input">
+                        <span>用户名：</span><input type="text" name="username" placeholder="学号/工号"/>
+                    </div>
+                    <div class="con_input">
+                        <span>密&nbsp;&nbsp;&nbsp;&nbsp;码：</span><input type="password" name="password"
+                                                                       placeholder="密码"/>
+                    </div>
+                    <input type="submit" value="登    录" class="submit-btn"/><br>
+                </form>
+<!--                还没有账号？<a href="regist.html" style="text-decoration: none">注册！</a>&nbsp;&nbsp;&nbsp;&nbsp;<a-->
+<!--                    href="re.html" style="text-decoration: none">-->
+<!--                忘记密码-->
+<!--            </a>-->
+            </div>
+        </div>
+    </center>
 </div>
 </div>
 
 <div id="footer">
-	<center>
+    <center>
 
-	</center>
+    </center>
 </div>
 
 </body>
+<!--<script src="jquery-3.3.1.js"></script>-->
+<script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')
+</script>
 <script>
-	<!--$(function(){-->
-	<!--function isEmpty(obj){-->
-    <!--if(typeof obj == "undefined" || obj == null || obj == ""){-->
-        <!--return true;-->
-    <!--}else{-->
-        <!--return false;-->
-    <!--}-->
-<!--}-->
-	 	<!--var e = window.location.search;-->
-		<!--if(!isEmpty(e)){-->
-			<!--alert("用户名或密码错误！")-->
-		<!--}-->
-	<!--});-->
+    $(function () {
+        function isEmpty(obj) {
+            if (obj == "undefined" || obj == null || obj == "") {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        var e = window.location.search;
+        if (!isEmpty(e)) {
+            alert("用户名或密码错误！")
+        }
+    });
 </script>
 </html>

@@ -52,4 +52,10 @@
         delete from user_info
         where user_nm=#{userNm}
     </delete>
+
+    <update id="updatePwd">
+        update user_info
+        set user_pwd=#{userPwd}
+        where user_nm = #{userNm}
+    </update>
 </mapper>

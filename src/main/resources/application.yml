@@ -1,7 +1,8 @@
 server:
   port: 8080
-  session:
-    timeout: 300
+  servlet:
+    session:
+      timeout: 1800
 spring:
   datasource:
     url:  jdbc:mysql://localhost:3306/admin?serverTimezone=UTC&noDatetimeStringSync=true&characterEncoding=utf8&useAffectedRows=true

@@ -44,10 +44,9 @@ public class BrowerSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/user/login","/assets/**","/dist/**","/docs/**",
-                        "/dashboard.css","/jquery-3.3.1.js","/menu.css","/user/getUserInfo").permitAll()
+                        "/dashboard.css","/jquery-3.3.1.js","/menu.css","/user/getUserInfo","/updatePwd","/pwd","/tTable/findTimeTables","/tTable/findClassInfo").permitAll()
                 .antMatchers("/tTable/**","/class/**","/index").hasRole("teachingAdmin")
                 .antMatchers("/user/**","/index").hasRole("admin")
-                .antMatchers("/index").hasRole("students")
 
                 .anyRequest().authenticated()
                 .and().csrf().disable();

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<div class="form-group">
+    <div class="col-xs-4">
+        <label>新密码：</label>
+        <input type="password" class="form-control" id="newPwd">
+    </div>
+    <div class="col-xs-4">
+        <label>确认密码：</label>
+        <input type="password" class="form-control" id="confirm">
+    </div>
+    <button type="button" class="btn btn-primary" id="commit">提交</button>
+</div>
+<script>
+    $("#commit").click(function () {
+        var pwd1 = $("#newPwd").val();
+        var pwd2 = $("#confirm").val();
+        if (pwd1 != pwd2) {
+           alert("两次密码必须相同");
+           return 0;
+        }
+        $.ajax({
+            type:'get',
+            url:'/updatePwd',
+            data:{"pwd1":pwd1},
+            contentType: "application/json;charset=UTF-8;",
+            dataType:'text',
+            success:function(data){
+                alert(data);
+                onChange();
+            },
+            error:function(){
+                alert("发生未知错误");
+            }
+        });
+    });
+</script>

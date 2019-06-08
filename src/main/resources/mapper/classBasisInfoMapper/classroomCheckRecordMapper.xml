@@ -3,12 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kmust.labManagementSystem.mapper.classBasisInfoMapper.ClassRoomCheckRecordMapper">
     <resultMap id="BaseResultMap" type="com.kmust.labManagementSystem.dao.classBasisInfo.CheckRecord">
-        <result column="id" jdbcType="INTEGER" property="id" />
-        <result column="classroom_name" jdbcType="VARCHAR" property="classRoomName" />
-        <result column="state" jdbcType="VARCHAR" property="state" />
-        <result column="date" jdbcType="VARCHAR" property="date" />
-        <result column="check_man" jdbcType="VARCHAR" property="checkMan" />
-        <result column="note" jdbcType="VARCHAR" property="note" />
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="classroom_name" jdbcType="VARCHAR" property="classRoomName"/>
+        <result column="state" jdbcType="VARCHAR" property="state"/>
+        <result column="date" jdbcType="VARCHAR" property="date"/>
+        <result column="check_man" jdbcType="VARCHAR" property="checkMan"/>
+        <result column="note" jdbcType="VARCHAR" property="note"/>
     </resultMap>
     <insert id="insertRecord" parameterType="com.kmust.labManagementSystem.dao.classBasisInfo.CheckRecord">
         insert into classroom_check_table
@@ -27,7 +27,11 @@
         delete from classroom_check_table
         where id=#{id}
     </delete>
-
+    <update id="checkClass">
+        update classroom_check_table
+        set check_man = #{checkMan},date=#{date}
+        where id=#{id}
+    </update>
 
 
 </mapper>

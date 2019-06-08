@@ -24,7 +24,7 @@ var arr = [];
                         }
                     });
     }else{
-        confirm("请先选中要删除的记录！");
+        confirm("请先选中要删除的教室！");
 
     }
 });
@@ -51,3 +51,35 @@ var arr = [];
         });
 
     });
+
+$("#check").click(function(){
+    var arr=[];
+    var checkRecord =  $('#mytab').bootstrapTable('getSelections');
+    for(var  i=0;i<checkRecord.length;i++){
+        console.log(checkRecord[i].id);
+        arr.push(checkRecord[i].id);
+    }
+    if(checkRecord.length>0){
+        if(confirm("你确定该教室已经检查了吗？")==false){
+            return 0;
+        }
+        var da={checkRecord:checkRecord};
+        $.ajax({
+            type:'post',
+            url:'/checkInfo/checkClassroom',
+            traditional: true,
+            data:JSON.stringify(arr),
+            contentType: "application/json;charset=UTF-8;",
+            dataType:'text',
+            success:function(data){
+                alert(data);
+            },
+            error:function(){
+                alert("请求失败");
+            }
+        });
+    }else{
+        confirm("请先选中要检查的教室！");
+
+    }
+});

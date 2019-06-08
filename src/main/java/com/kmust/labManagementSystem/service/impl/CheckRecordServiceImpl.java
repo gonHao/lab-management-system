@@ -3,11 +3,15 @@ package com.kmust.labManagementSystem.service.impl;
 import com.kmust.labManagementSystem.dao.classBasisInfo.CheckRecord;
 import com.kmust.labManagementSystem.dao.teachingManagementDao.TimeTablesInfo;
 import com.kmust.labManagementSystem.mapper.classBasisInfoMapper.ClassRoomCheckRecordMapper;
+import com.kmust.labManagementSystem.mapper.labMapper.UserMapper;
 import com.kmust.labManagementSystem.mapper.teachingManagementMapper.TimeTablesMapper;
+import com.kmust.labManagementSystem.mapper.userMapper.UserModuleMapMapper;
 import com.kmust.labManagementSystem.service.CheckRecordService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
@@ -24,6 +28,8 @@ public class CheckRecordServiceImpl implements CheckRecordService {
     private ClassRoomCheckRecordMapper classRoomCheckRecordMapper;
     @Autowired
     private TimeTablesMapper timeTablesMapper;
+    @Autowired
+    private UserMapper userMapper;
     @Override
     public boolean addCheckClassroom(CheckRecord checkRecord) {
         if(classRoomCheckRecordMapper.insertRecord(checkRecord)==1){
@@ -51,6 +57,7 @@ public class CheckRecordServiceImpl implements CheckRecordService {
         return checkRecords;
     }
 
+
     @Override
     public String deleteById(String[] arr) {
         for(int i=0;i<arr.length;i++){
@@ -59,5 +66,22 @@ public class CheckRecordServiceImpl implements CheckRecordService {
             }
         }
         return "删除成功";
+    }
+
+    @Override
+    public boolean checkClassroom(Integer id) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
+        String username = userDetails.getUsername();
+        String checkMan =  userMapper.selectByUserNm(username).getName();
+        if(checkMan==null||"".equals(checkMan)){
+            return false;
+        }
+        SimpleDateFormat df  = new SimpleDateFormat("yyyyMMdd");
+        if(classRoomCheckRecordMapper.checkClass(id,checkMan,df.format(new Date()))==1){
+            return true;
+        }
+        return false;
     }
 }

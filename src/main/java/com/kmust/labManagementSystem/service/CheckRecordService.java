@@ -27,4 +27,10 @@ public interface CheckRecordService {
      */
     String deleteById(String[] arr);
 
+    /**
+     * 检查教室
+     * @param id
+     * @return
+     */
+    boolean checkClassroom(Integer id);
 }

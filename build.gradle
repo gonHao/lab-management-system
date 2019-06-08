@@ -29,7 +29,7 @@ dependencies {
 	compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.15'
 	testCompile("org.springframework.boot:spring-boot-starter-test")
 	testCompile("org.springframework.security:spring-security-test")
-
+	compile group: 'com.alibaba', name: 'fastjson', version: '1.2.58'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'

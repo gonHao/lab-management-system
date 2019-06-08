@@ -51,4 +51,12 @@ public interface UserMapper {
       * @return
       */
      int deleteUser(@Param("userNm") String userNm);
+
+     /**
+      * 修改密码
+      * @param userNm
+      * @param userPwd
+      * @return
+      */
+     int  updatePwd(@Param("userNm")String userNm,@Param("userPwd")String userPwd);
 }
